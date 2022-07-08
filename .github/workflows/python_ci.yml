@@ -1,4 +1,4 @@
-name: Python Flake8
+name: Python Checks
 
 on:
   pull_request:

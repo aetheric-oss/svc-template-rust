@@ -4,8 +4,7 @@ on:
     - master
   pull_request:
 
-
-name: Rust CI Checks
+name: Rust Checks
 
 jobs:
   check:
