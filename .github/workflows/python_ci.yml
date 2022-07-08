@@ -1,12 +1,12 @@
 name: Python Flake8
 
 on:
-  push:
-    paths:
-      - '**.py'
   pull_request:
     paths:
       - '**.py'
+  push:
+    branches:
+    - master
 
 jobs:
   flake8-lint:
