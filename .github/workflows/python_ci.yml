@@ -1,7 +1,10 @@
 # Check file validity at: https://rhysd.github.io/actionlint/
+# https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md
 
 name: Python Checks
-
+env:
+  # Python 3.10.4
+  UBUNTU_VERSION: ubuntu-20.04
 on:
   pull_request:
   push:
@@ -11,16 +14,16 @@ on:
 jobs:
   formatting-check:
     name: Formatting Check
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.UBUNTU_VERSION }}
     steps:
     - uses: actions/checkout@v2
     - name: YAPF for proper formatting
       run: |
-        python3 -m pip install yapf
+        python3 -m pip install -r requirements.txt
         yapf -r -i -vv . style google
 
   flake8-lint:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.UBUNTU_VERSION }}
     name: Lint
     steps:
       - name: Check out source repository
