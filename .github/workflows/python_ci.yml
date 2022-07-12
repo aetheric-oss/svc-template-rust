@@ -1,3 +1,5 @@
+# Check file validity at: https://rhysd.github.io/actionlint/
+
 name: Python Checks
 
 on:
