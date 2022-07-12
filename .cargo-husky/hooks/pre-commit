@@ -5,6 +5,8 @@
 # Output at /home/amsmith/git/arrow/svc-template-rust/target/debug/build/cargo-husky-849ff88dd598a11b/out
 #
 
+echo "pre-commit" # should be visible in the console when doing a git commit
+
 set -e
 
 # RUST
