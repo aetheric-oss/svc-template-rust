@@ -2,14 +2,14 @@
 # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md
 
 name: Python Checks
-env:
-  # Python 3.10.4
-  UBUNTU_VERSION: ubuntu-20.04
 on:
   pull_request:
   push:
     branches:
     - main
+
+env:
+  UBUNTU_VERSION: ubuntu-20.04
 
 jobs:
   formatting-check:
