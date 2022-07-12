@@ -4,11 +4,9 @@ name: Python Checks
 
 on:
   pull_request:
-    paths:
-      - '**.py'
   push:
     branches:
-    - master
+    - main
 
 jobs:
   formatting-check:
@@ -17,7 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: YAPF for proper formatting
-      run: yapf -r -i -vv . style google
+      run: |
+        python3 -m pip install yapf
+        yapf -r -i -vv . style google
+
   flake8-lint:
     runs-on: ubuntu-latest
     name: Lint
