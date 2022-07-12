@@ -1,20 +1,22 @@
 # Check file validity at: https://rhysd.github.io/actionlint/
 # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-Readme.md
 
-name: Python Checks
 on:
-  pull_request:
   push:
     branches:
     - main
+  pull_request:
 
-env:
-  UBUNTU_VERSION: ubuntu-20.04
+name: Python Checks
+
+# env:
+  # 2022/07/12: Can't use env.VALUE in "runs-on" field yet
+  # UBUNTU_VERSION: ubuntu-20.04
 
 jobs:
   formatting-check:
     name: Formatting Check
-    runs-on: ${{ env.UBUNTU_VERSION }}
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: YAPF for proper formatting
@@ -23,7 +25,7 @@ jobs:
         yapf -r -i -vv . style google
 
   flake8-lint:
-    runs-on: ${{ env.UBUNTU_VERSION }}
+    runs-on: ubuntu-20.04
     name: Lint
     steps:
       - name: Check out source repository
