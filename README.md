@@ -18,9 +18,9 @@ The following documents are relevant to this service:
 - [SDD](./docs/sdd.md)
 
 ## :busts_in_silhouette: Arrow DAO
-Learn about us:
+Learn more about us:
 - [Website](https://www.arrowair.com/)
 - [Arrow Docs](https://www.arrowair.com/docs/intro)
-- [Discord](https://discord.com/invite/fab4bxaAW9)
+- [Discord](https://discord.com/invite/arrow)
 
 
