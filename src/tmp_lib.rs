@@ -1,5 +1,6 @@
-//! Hello world example for Rust
-//! This is a crate description, needed or else missing_docs warning will occur
+//! Example of a rust library.
+//!
+//! Learn more about how to create a library [here](https://doc.rust-lang.org/book/rust-libs.html).
 
 /// Prints "Hello, {name}!"
 ///

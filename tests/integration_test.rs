@@ -1,5 +1,5 @@
-//! Hello world example for Rust
-//! This is a crate description, needed or else missing_docs warning will occur
+//! Example for writing an integration test.
+//! More information: https://doc.rust-lang.org/book/testing-rust.html#integration-tests
 
 use tmp_lib;
 
