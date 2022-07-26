@@ -44,7 +44,7 @@ jobs:
           override: true
  
       - name: Build
-        run: cargo rustc -- -Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort 
+        run: cargo build
 
       - name: Test
         run: cargo test
