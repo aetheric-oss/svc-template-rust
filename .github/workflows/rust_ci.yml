@@ -42,7 +42,7 @@ jobs:
           profile: minimal
           toolchain: ${{ env.RUST_VERSION }}
           override: true
- 
+
       - name: Build
         run: cargo build
 
