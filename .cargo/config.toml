@@ -1,7 +1,7 @@
 # https://doc.rust-lang.org/cargo/reference/config.html
 
 [build]
-rustflags = [ 
+rustflags = [
     "-Wmissing_docs",
     "-Wmissing_debug_implementations",
     "-Wmissing_copy_implementations",
