@@ -1,0 +1,26 @@
+name: EditorConfig Check
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+jobs:
+  codestyle:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: EditorConfig-Action
+      uses: zbeekman/EditorConfig-Action@v1.1.1
+      env:
+        # Only lint files changed in the pull request.
+        ALWAYS_LINT_ALL_FILES: true # Might be slow for large repos
+
+        # Automatic error fixing not yet supported by EditorConfig-Action.
+        # Forced off to avoid unintentionally enabling when upgrading to
+        # new version.
+        EC_FIX_ERROR: false
