@@ -38,4 +38,9 @@ Learn more about us:
 - [Arrow Docs](https://www.arrowair.com/docs/intro)
 - [Discord](https://discord.com/invite/arrow)
 
+## :exclamation: Treatment of `Cargo.lock`
+If you are building a non-end product like a library, include `Cargo.lock` in `.gitignore`.
 
+If you are building an end product like a command line tool, check `Cargo.lock` to the git. 
+
+Read more about it [here](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html);
