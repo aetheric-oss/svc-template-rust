@@ -26,6 +26,19 @@ Directory:
 - `tests/`: Integration Tests
 - `docs/`: Module Documentation
 
+## Installation
+
+Install Rust with [Rustup](https://www.rust-lang.org/tools/install).
+
+```bash
+# After cloning the repository
+python3 -m pip install -r requirements.txt
+
+# Adds custom pre-commit hooks to .git through cargo-husky dependency
+# !! Required for developers !!
+cargo test
+```
+
 ## :scroll: Documentation
 The following documents are relevant to this service:
 - [Concept of Operations](TODO)
@@ -38,4 +51,9 @@ Learn more about us:
 - [Arrow Docs](https://www.arrowair.com/docs/intro)
 - [Discord](https://discord.com/invite/arrow)
 
+## :exclamation: Treatment of `Cargo.lock`
+If you are building a non-end product like a library, include `Cargo.lock` in `.gitignore`.
 
+If you are building an end product like a command line tool, check `Cargo.lock` to the git. 
+
+Read more about it [here](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html);
