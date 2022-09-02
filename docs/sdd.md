@@ -1,6 +1,10 @@
-![Arrow Banner](https://github.com/Arrow-air/.github/raw/main/profile/assets/arrow_v2_twitter-banner_neu.png)
-
 # \<MODULE NAME\> - Software Design Document (SDD)
+
+<center>
+
+<img src="https://github.com/Arrow-air/tf-github/raw/main/src/templates/doc-banner-services.png" style="height:250px" />
+
+</center>
 
 ## Overview
 
