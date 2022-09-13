@@ -71,6 +71,19 @@ make python-tidy
 make tidy
 ```
 
+### Spell check
+
+Before being able to commit, cspell will be used as a spelling checker for all files, making sure no unintended spelling errors are found.
+You can run cspell yourself by using the following make target:
+```bash
+make cspell-test
+```
+
+If all spelling errors are fixed, but cspell still finds words that are unknown, you can add these words to the local project words list by running the following command:
+```bash
+make cspell-add-words
+```
+
 ### Other make targets
 
 There are additional make targets available. You can find all possible targets by running make without a target or use `make help`
