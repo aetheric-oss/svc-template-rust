@@ -1,0 +1,13 @@
+clippy
+CONOPS
+ifeq
+maxdepth
+mstruebing
+RUSTC
+Rustup
+setaf
+SMUL
+smul
+taplo
+tput
+yapf
