@@ -11,3 +11,4 @@ smul
 taplo
 tput
 yapf
+proto
