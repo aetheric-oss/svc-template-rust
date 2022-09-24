@@ -1,4 +1,4 @@
-# \<MODULE NAME\> - Software Design Document (SDD)
+# Software Design Document (SDD) - `svc-FIXME` 
 
 <center>
 
@@ -10,7 +10,7 @@
 
 This document details the software implementation of FIXME.
 
-This process is responsible for FIXME
+This service is responsible for FIXME
 
 Attribute | Description
 --- | ---
@@ -20,12 +20,11 @@ Status | Draft
 
 Document | Description
 --- | ---
-[Concept of Operations (CONOPS) (FIXME)](./FIXME) | Overview of the scope and duties of this module.
-[Requirements & User Stories (FIXME)](./FIXME) | Requirements and user stories for this module.
-
-## Location
-
-FIXME
+:construction: High-Level Concept of Operations (CONOPS) | Overview of Arrow microservices.
+:construction: High-Level Interface Control Document (ICD) | Interfaces and frameworks common to all Arrow microservices.
+:construction: Requirements - `svc-FIXME` | Requirements and user stories for this microservice.
+[Concept of Operations - `svc-FIXME`](./conops.md) | Defines the motivation and duties of this microservice.
+[Interface Control Document (ICD) - `svc-FIXME`](./icd.md) | Defines the inputs and outputs of this microservice.
 
 ## Module Attributes
 
@@ -40,40 +39,23 @@ Realtime | ? |
 
 FIXME
 
-## Logic 
+## Logic
 
 ### Initialization
 
-FIXME 
+FIXME Description of activities at init
 
-### Control Loop
+### Loop
 
-FIXME
+FIXME Description of activities during loop
 
 ### Cleanup
 
-FIXME
+FIXME Description of activities at cleanup
 
-## Interfaces
+## Interface Handlers
 
-For a refresher of the processes in the Arrow backend, please see the [top level README.md](../README.md).
-
-```mermaid
-graph LR
-    subgraph Vehicle Domain
-        air((Aircraft))
-    end
-
-    subgraph Client Domain
-        app(App X)
-    end
-
-    subgraph Server Domain
-        module[Module A]
-    end
-```
-
-FIXME description of the graph.
+FIXME - What internal activities are triggered by messages at this module's interfaces?
 
 ## Tests
 
