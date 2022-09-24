@@ -53,9 +53,9 @@ FIXME Description of activities during loop
 
 FIXME Description of activities at cleanup
 
-## Interfaces
+## Interface Handlers
 
-See the ICD.
+FIXME - What internal activities are triggered by messages at this module's interfaces?
 
 ## Tests
 
