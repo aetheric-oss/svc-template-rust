@@ -1,0 +1,21 @@
+// Test Documentation
+syntax = "proto3";
+package grpc;
+
+// Heartbeat
+service TemplateRpc {
+    // Common Interfaces
+    rpc isReady (QueryIsReady) returns (ReadyResponse);
+}
+
+// Are you Ready?
+message QueryIsReady {
+    // No arguments
+}
+
+// I'm Ready
+message ReadyResponse {
+
+    // True if ready
+    bool ready = 1;
+}

@@ -12,10 +12,8 @@ Checks](https://github.com/arrow-air/svc-template-rust/actions/workflows/rust_ci
 ![Arrow DAO
 Discord](https://img.shields.io/discord/853833144037277726?style=plastic)
 
-2. *Rename `svc-template-rust` and `svc_template_rust` in all files*
-   - *Replace with the name of your service (e.g. `svc-scheduler`)*
-3. *Rename or remove `tmp_lib`*
-4. *Remove this and previous numbered bullets*
+2. *Grep for 'template' in all files, replace with name of this service*
+3. *Remove this and previous numbered bullets*
 
 ## :telescope: Overview
 
@@ -90,9 +88,10 @@ There are additional make targets available. You can find all possible targets b
 
 ## :scroll: Documentation
 The following documents are relevant to this service:
-- [Concept of Operations](TODO)
-- [Requirements & User Stories](TODO)
-- [SDD](./docs/sdd.md)
+- :construction: Requirements & User Stories
+- [Concept of Operations - `svc-FIXME`](./docs/conops.md)
+- [Software Design Document (SDD) - `svc-FIXME`](./docs/sdd.md)
+- [Interface Control Document (ICD) - `svc-FIXME`](./docs/icd.md)
 
 ## :busts_in_silhouette: Arrow DAO
 Learn more about us:
