@@ -21,8 +21,8 @@ FIXME - What does this microservice do, in brief?
 
 Document | Description
 --- | ---
-:construction: High-Level Concept of Operations (CONOPS) | Overview of Arrow microservices.
-:construction: High-Level Interface Control Document (ICD) | Interfaces and frameworks common to all Arrow microservices.
+[High-Level Concept of Operations (CONOPS)](https://github.com/Arrow-air/se-services/blob/develop/docs/conops.md) | Overview of Arrow microservices.
+[High-Level Interface Control Document (ICD)](https://github.com/Arrow-air/se-services/blob/develop/docs/icd.md) | Interfaces and frameworks common to all Arrow microservices.
 :construction: Requirements - `svc-FIXME` | Requirements and user stories for this microservice.
 [Interface Control Document (ICD) - `svc-FIXME`](./icd.md) | Defines the inputs and outputs of this microservice.
 [Software Design Document (SDD) - `svc-FIXME`](./sdd.md) | Specifies the internal activity of this microservice.
