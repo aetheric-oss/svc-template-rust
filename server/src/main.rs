@@ -45,9 +45,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let (grpc_address, grpc_port) = get_grpc_addr_port();
     let full_grpc_addr = format!("{grpc_address}:{grpc_port}").parse()?;
 
+    let (mut health_reporter, health_service) = tonic_health::server::health_reporter();
+    health_reporter
+        .set_serving::<TemplateRpcServer<TemplateImpl>>()
+        .await;
+
     let grpc_client = TemplateImpl::default();
     //start server
     Server::builder()
+        .add_service(health_service)
         .add_service(TemplateRpcServer::new(grpc_client))
         .serve(full_grpc_addr)
         .await?;
