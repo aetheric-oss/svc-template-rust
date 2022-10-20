@@ -1,22 +1,25 @@
 /// Are you Ready?
 ///
 /// No arguments
-#[derive(Eq, Copy, Clone, PartialEq, ::prost::Message)]
-pub struct QueryIsReady {}
+#[derive(Eq, Copy)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryIsReady {
+}
 /// I'm Ready
-#[derive(Eq, Copy, Clone, PartialEq, ::prost::Message)]
+#[derive(Eq, Copy)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadyResponse {
     /// True if ready
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag="1")]
     pub ready: bool,
 }
 /// Generated server implementations.
-pub mod template_rpc_server {
+pub mod template_rust_rpc_server {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    ///Generated trait containing gRPC methods that should be implemented for use with TemplateRpcServer.
+    ///Generated trait containing gRPC methods that should be implemented for use with TemplateRustRpcServer.
     #[async_trait]
-    pub trait TemplateRpc: Send + Sync + 'static {
+    pub trait TemplateRustRpc: Send + Sync + 'static {
         /// Common Interfaces
         async fn is_ready(
             &self,
@@ -25,13 +28,13 @@ pub mod template_rpc_server {
     }
     /// Heartbeat
     #[derive(Debug)]
-    pub struct TemplateRpcServer<T: TemplateRpc> {
+    pub struct TemplateRustRpcServer<T: TemplateRustRpc> {
         inner: _Inner<T>,
         accept_compression_encodings: EnabledCompressionEncodings,
         send_compression_encodings: EnabledCompressionEncodings,
     }
     struct _Inner<T>(Arc<T>);
-    impl<T: TemplateRpc> TemplateRpcServer<T> {
+    impl<T: TemplateRustRpc> TemplateRustRpcServer<T> {
         pub fn new(inner: T) -> Self {
             Self::from_arc(Arc::new(inner))
         }
@@ -43,7 +46,10 @@ pub mod template_rpc_server {
                 send_compression_encodings: Default::default(),
             }
         }
-        pub fn with_interceptor<F>(inner: T, interceptor: F) -> InterceptedService<Self, F>
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> InterceptedService<Self, F>
         where
             F: tonic::service::Interceptor,
         {
@@ -62,27 +68,36 @@ pub mod template_rpc_server {
             self
         }
     }
-    impl<T, B> tonic::codegen::Service<http::Request<B>> for TemplateRpcServer<T>
+    impl<T, B> tonic::codegen::Service<http::Request<B>> for TemplateRustRpcServer<T>
     where
-        T: TemplateRpc,
+        T: TemplateRustRpc,
         B: Body + Send + 'static,
         B::Error: Into<StdError> + Send + 'static,
     {
         type Response = http::Response<tonic::body::BoxBody>;
         type Error = std::convert::Infallible;
         type Future = BoxFuture<Self::Response, Self::Error>;
-        fn poll_ready(&mut self, _cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
+        fn poll_ready(
+            &mut self,
+            _cx: &mut Context<'_>,
+        ) -> Poll<Result<(), Self::Error>> {
             Poll::Ready(Ok(()))
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
             match req.uri().path() {
-                "/grpc.TemplateRpc/isReady" => {
+                "/grpc.TemplateRustRpc/isReady" => {
                     #[allow(non_camel_case_types)]
-                    struct isReadySvc<T: TemplateRpc>(pub Arc<T>);
-                    impl<T: TemplateRpc> tonic::server::UnaryService<super::QueryIsReady> for isReadySvc<T> {
+                    struct isReadySvc<T: TemplateRustRpc>(pub Arc<T>);
+                    impl<
+                        T: TemplateRustRpc,
+                    > tonic::server::UnaryService<super::QueryIsReady>
+                    for isReadySvc<T> {
                         type Response = super::ReadyResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
                         fn call(
                             &mut self,
                             request: tonic::Request<super::QueryIsReady>,
@@ -99,27 +114,32 @@ pub mod template_rpc_server {
                         let inner = inner.0;
                         let method = isReadySvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
-                            accept_compression_encodings,
-                            send_compression_encodings,
-                        );
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            );
                         let res = grpc.unary(method, req).await;
                         Ok(res)
                     };
                     Box::pin(fut)
                 }
-                _ => Box::pin(async move {
-                    Ok(http::Response::builder()
-                        .status(200)
-                        .header("grpc-status", "12")
-                        .header("content-type", "application/grpc")
-                        .body(empty_body())
-                        .unwrap())
-                }),
+                _ => {
+                    Box::pin(async move {
+                        Ok(
+                            http::Response::builder()
+                                .status(200)
+                                .header("grpc-status", "12")
+                                .header("content-type", "application/grpc")
+                                .body(empty_body())
+                                .unwrap(),
+                        )
+                    })
+                }
             }
         }
     }
-    impl<T: TemplateRpc> Clone for TemplateRpcServer<T> {
+    impl<T: TemplateRustRpc> Clone for TemplateRustRpcServer<T> {
         fn clone(&self) -> Self {
             let inner = self.inner.clone();
             Self {
@@ -129,7 +149,7 @@ pub mod template_rpc_server {
             }
         }
     }
-    impl<T: TemplateRpc> Clone for _Inner<T> {
+    impl<T: TemplateRustRpc> Clone for _Inner<T> {
         fn clone(&self) -> Self {
             Self(self.0.clone())
         }
@@ -139,7 +159,7 @@ pub mod template_rpc_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: TemplateRpc> tonic::server::NamedService for TemplateRpcServer<T> {
-        const NAME: &'static str = "grpc.TemplateRpc";
+    impl<T: TemplateRustRpc> tonic::server::NamedService for TemplateRustRpcServer<T> {
+        const NAME: &'static str = "grpc.TemplateRustRpc";
     }
 }

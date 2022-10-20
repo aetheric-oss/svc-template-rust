@@ -794,7 +794,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "svc-template"
+name = "svc-template-rust"
 version = "0.1.0"
 dependencies = [
  "cargo-husky",
@@ -809,10 +809,11 @@ dependencies = [
  "tokio-util",
  "tonic",
  "tonic-build",
+ "tonic-health",
 ]
 
 [[package]]
-name = "svc-template-client-grpc"
+name = "svc-template-rust-client-grpc"
 version = "0.1.0"
 dependencies = [
  "prost",
@@ -972,6 +973,20 @@ dependencies = [
  "prost-build",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "tonic-health"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "632faf60b81a5b5f439d9635102b2b2921ee39171faf14f3e0008d99f98689f1"
+dependencies = [
+ "async-stream",
+ "bytes",
+ "prost",
+ "tokio",
+ "tokio-stream",
+ "tonic",
 ]
 
 [[package]]
