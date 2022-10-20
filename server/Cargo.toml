@@ -22,3 +22,8 @@ tonic-health = "0.7.1"
 
 [build-dependencies]
 tonic-build = "0.8"
+
+[dev-dependencies.cargo-husky]
+default-features = false          # Disable features which are enabled by default
+features         = ["user-hooks"]
+version          = "1"
