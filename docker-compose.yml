@@ -2,7 +2,7 @@
 version: '3.6'
 services:
   web-server:
-    container_name: ${DOCKER_NAME}-run
+    container_name: ${DOCKER_NAME}-example-server
     image: ${PACKAGE_NAME}:latest
     ports:
       - ${HOST_PORT_REST}:${DOCKER_PORT_REST}

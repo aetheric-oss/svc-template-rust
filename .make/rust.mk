@@ -95,8 +95,8 @@ rust-example-%: check-cargo-registry rust-docker-pull
 		-e EXAMPLE_TARGET=$(EXAMPLE_TARGET) \
 		-e SERVER_PORT_GRPC=$(DOCKER_PORT_GRPC) \
 		-e SERVER_PORT_REST=$(DOCKER_PORT_REST) \
-		-e SERVER_HOSTNAME=$(DOCKER_NAME)-run \
-		example && docker compose stop
+		-e SERVER_HOSTNAME=$(DOCKER_NAME)-example-server \
+		example && docker compose down
 
 rust-clippy: check-cargo-registry rust-docker-pull
 	@echo "$(CYAN)Running clippy...$(SGR0)"
