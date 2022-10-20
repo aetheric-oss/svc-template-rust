@@ -15,16 +15,16 @@ pub struct ReadyResponse {
     pub ready: bool,
 }
 /// Generated client implementations.
-pub mod template_rpc_client {
+pub mod template_rust_rpc_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Heartbeat
     #[derive(Debug, Clone)]
-    pub struct TemplateRpcClient<T> {
+    pub struct TemplateRustRpcClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl TemplateRpcClient<tonic::transport::Channel> {
+    impl TemplateRustRpcClient<tonic::transport::Channel> {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
@@ -35,7 +35,7 @@ pub mod template_rpc_client {
             Ok(Self::new(conn))
         }
     }
-    impl<T> TemplateRpcClient<T>
+    impl<T> TemplateRustRpcClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
@@ -53,7 +53,7 @@ pub mod template_rpc_client {
         pub fn with_interceptor<F>(
             inner: T,
             interceptor: F,
-        ) -> TemplateRpcClient<InterceptedService<T, F>>
+        ) -> TemplateRustRpcClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
@@ -67,7 +67,7 @@ pub mod template_rpc_client {
                 http::Request<tonic::body::BoxBody>,
             >>::Error: Into<StdError> + Send + Sync,
         {
-            TemplateRpcClient::new(InterceptedService::new(inner, interceptor))
+            TemplateRustRpcClient::new(InterceptedService::new(inner, interceptor))
         }
         /// Compress requests with the given encoding.
         ///
@@ -99,7 +99,9 @@ pub mod template_rpc_client {
                     )
                 })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/grpc.TemplateRpc/isReady");
+            let path = http::uri::PathAndQuery::from_static(
+                "/grpc.TemplateRustRpc/isReady",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
