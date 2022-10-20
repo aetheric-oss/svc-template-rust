@@ -794,16 +794,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "svc-template-client-grpc"
-version = "0.1.0"
-dependencies = [
- "prost",
- "prost-types",
- "tokio",
- "tonic",
-]
-
-[[package]]
 name = "svc-template-rust"
 version = "0.1.0"
 dependencies = [
@@ -820,6 +810,16 @@ dependencies = [
  "tonic",
  "tonic-build",
  "tonic-health",
+]
+
+[[package]]
+name = "svc-template-rust-client-grpc"
+version = "0.1.0"
+dependencies = [
+ "prost",
+ "prost-types",
+ "tokio",
+ "tonic",
 ]
 
 [[package]]
