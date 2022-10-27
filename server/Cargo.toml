@@ -1,6 +1,6 @@
 [package]
 name    = "svc-template-rust"
-version = "0.1.0"
+version = "0.2.0-develop.0"
 edition = "2021"              # Allowed values are 2015, 2018, 2021
 # Rust Editions: https://doc.rust-lang.org/edition-guide/index.html
 
