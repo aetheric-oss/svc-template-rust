@@ -1,14 +1,22 @@
 [package]
-edition = "2021"
-name    = "svc-template-rust-client-grpc"
-version = "0.2.0-develop.0"
+description = "Arrow template service GRPC client"
+edition     = "2021"                                                       # Allowed values are 2015, 2018, 2021
+homepage    = "https://www.arrowair.com/docs/documentation/services/intro"
+keywords    = ["vtol", "client", "template"]                               # max 5
+license     = "BUSL-1.1"
+name        = "svc-template-rust-client-grpc"
+repository  = "https://github.com/Arrow-air/svc-template-rust"
+version     = "0.1.0"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+categories = [
+  "aerospace::drones",
+  "aerospace::protocols",
+] # max 5 -- https://crates.io/category_slugs
 
 [dependencies]
-prost       = "0.11.0"
-prost-types = "0.11.1"
-tonic       = "0.8.1"
+prost       = "0.11"
+prost-types = "0.11"
+tonic       = "0.8"
 
 [dev-dependencies]
 tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
