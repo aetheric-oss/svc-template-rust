@@ -6,7 +6,7 @@ keywords    = ["vtol", "client", "template"]                               # max
 license     = "BUSL-1.1"
 name        = "svc-template-rust-client-grpc"
 repository  = "https://github.com/Arrow-air/svc-template-rust"
-version     = "0.1.0"
+version     = "0.2.0-develop.2"
 
 categories = [
   "aerospace::drones",

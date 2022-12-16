@@ -1108,7 +1108,7 @@ dependencies = [
 
 [[package]]
 name = "svc-template-rust"
-version = "0.1.0"
+version = "0.2.0-develop.2"
 dependencies = [
  "cargo-husky",
  "chrono",
@@ -1130,7 +1130,7 @@ dependencies = [
 
 [[package]]
 name = "svc-template-rust-client-grpc"
-version = "0.1.0"
+version = "0.2.0-develop.2"
 dependencies = [
  "prost",
  "prost-types",
