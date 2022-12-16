@@ -1,3 +1,11 @@
+## [Release 0.2.0-develop.2](https://github.com/Arrow-air/svc-template-rust/releases/tag/v0.2.0-develop.2)
+
+### 🛠 Maintenance
+
+-  **ci:** .license - provisioned by terraform ([`591d8c0`](https://github.com/Arrow-air/svc-template-rust/commit/591d8c01ba784b953077c7cf704ccd94016ee49b))
+-  **ci:** .editorconfig - provisioned by terraform ([`812bf50`](https://github.com/Arrow-air/svc-template-rust/commit/812bf50e205bc73525ce5b9b0a10acc81ed032c2))
+-  **ci:** .github/workflows/nightly.yml - provisioned by terraform ([`d832a55`](https://github.com/Arrow-air/svc-template-rust/commit/d832a552e45ba702d7ea452c6a3f11421bcf2e10))
+
 ## [Release 0.2.0-develop.1](https://github.com/Arrow-air/svc-template-rust/releases/tag/v0.2.0-develop.1)
 
 ### 🛠 Maintenance
