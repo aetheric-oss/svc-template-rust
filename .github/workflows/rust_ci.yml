@@ -17,7 +17,6 @@ jobs:
   check:
     name: Checks
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, 'provisioned by terraform') }}
     steps:
       - uses: actions/checkout@v2
       - run: make rust-check
@@ -25,7 +24,6 @@ jobs:
   build_and_test_debug:
     name: Build & Test
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, 'provisioned by terraform') }}
     steps:
       - uses: actions/checkout@v2
       - name: Build
