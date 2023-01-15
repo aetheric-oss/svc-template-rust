@@ -2,22 +2,23 @@
 ///
 /// No arguments
 #[derive(Eq, Copy)]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryIsReady {
-}
+pub struct QueryIsReady {}
 /// I'm Ready
 #[derive(Eq, Copy)]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadyResponse {
     /// True if ready
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub ready: bool,
 }
 /// Generated server implementations.
 pub mod template_rust_rpc_server {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    ///Generated trait containing gRPC methods that should be implemented for use with TemplateRustRpcServer.
+    /// Generated trait containing gRPC methods that should be implemented for use with TemplateRustRpcServer.
     #[async_trait]
     pub trait TemplateRustRpc: Send + Sync + 'static {
         /// Common Interfaces
