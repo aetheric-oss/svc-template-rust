@@ -50,6 +50,9 @@ jobs:
           if [ "$GITHUB_REF_NAME" != "main" ]
           then
             echo "CUSTOM_RELEASE_RULES=fix:prerelease,feat:prerelease,chore:prerelease" >> $GITHUB_ENV
+            echo "RELEASE_COMMIT_MESSAGE=fixup! ci: update release files\n\n[skip ci]" >> $GITHUB_ENV
+          else
+            echo "RELEASE_COMMIT_MESSAGE=ci: update release files\n\n[skip ci]" >> $GITHUB_ENV
           fi
 
       - name: Determine new Tag
@@ -92,8 +95,11 @@ jobs:
           sed -i 's/releases\/tag\/${{ github.sha }}/releases\/tag\/${{ steps.tag_version.outputs.new_tag }}/g' temp
           mv temp CHANGELOG.md
 
-      - name: Update package version
+      - name: Add release tag to .terraform_init
         if: ${{ github.ref_name == 'main' }}
+        run: echo "${{ steps.tag_version.outputs.new_tag }}" >> .terraform_init
+
+      - name: Update package version
         run: |
           cargo install cargo-edit
           cargo set-version ${{ steps.tag_version.outputs.new_version }}
@@ -102,10 +108,8 @@ jobs:
           cargo update
 
       - name: Commit and push release updates
-        if: ${{ github.ref_name == 'main' }}
         env:
           CHANGED_FILES: ".terraform_init Cargo.lock client-grpc/Cargo.toml server/Cargo.toml CHANGELOG.md"
-          RELEASE_COMMIT_MESSAGE: "ci: update release files\n\n[skip ci]"
           GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
           GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
           GIT_COMMITTER_NAME: ${{ steps.import-gpg.outputs.name }}
@@ -115,18 +119,28 @@ jobs:
           # https://git-scm.com/docs/git-config#Documentation/git-config.txt-sequenceeditor
           GIT_SEQUENCE_EDITOR: ':'
         run: |
-          echo "${{ steps.tag_version.outputs.new_tag }}" >> .terraform_init
-          git commit $CHANGED_FILES -m "$RELEASE_COMMIT_MESSAGE"
+          git commit $CHANGED_FILES -m "$(echo -e $RELEASE_COMMIT_MESSAGE)"
 
       - name: Push any changes
         run: |
           git push -f
+          # set COMMIT_SHA env var with new current sha as it is used for tagging in the next step
+          echo "COMMIT_SHA=$(git rev-parse --verify HEAD)" >> $GITHUB_ENV
 
       - name: Set and Push New Tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.tag_version.outputs.new_version }}
+          commit_sha: ${{ env.COMMIT_SHA }}
+
+      - name: Generate Changelog base on new tag
+        id: changelog_release
+        uses: mrchief/universal-changelog-action@v1.3.2
+        with:
+          previousReleaseTagNameOrSha: ${{ steps.tag_version.outputs.previous_tag }}
+          nextReleaseTagName: ${{ steps.tag_version.outputs.new_tag }}
+          nextReleaseName: "Release ${{ steps.tag_version.outputs.new_version }}"
 
       - name: Create Release
         id: create_release
@@ -136,7 +150,7 @@ jobs:
         with:
           tag_name: ${{ steps.tag_version.outputs.new_tag }}
           release_name: Release ${{ steps.tag_version.outputs.new_version }}
-          body: ${{ steps.changelog.outputs.changelog }}
+          body: ${{ steps.changelog_release.outputs.changelog }}
           draft: false
           prerelease: ${{ github.ref_name == 'develop' }}
 
