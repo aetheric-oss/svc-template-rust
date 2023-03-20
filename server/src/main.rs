@@ -1,6 +1,6 @@
 //! gRPC server implementation
 
-///module svc_storage generated from svc-storage.proto
+///module generated from proto/svc-template-rust-grpc.proto
 pub mod svc_template_rust {
     #![allow(unused_qualifications, missing_docs)]
     include!("grpc.rs");
