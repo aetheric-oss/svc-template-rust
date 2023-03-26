@@ -69,6 +69,7 @@ jobs:
         if: ${{ github.ref_name == 'develop' }}
         run: |
           git rebase -i --autosquash origin/main
+        continue-on-error: true
         env:
           GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
           GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
@@ -155,12 +156,13 @@ jobs:
           draft: false
           prerelease: ${{ github.ref_name == 'develop' }}
 
-      - name: Rebase develop branch
+      - name: Reset develop branch to main
         if: ${{ github.ref_name == 'main' }}
         run: |
           git checkout develop
-          git pull --rebase origin main
+          git reset --hard origin/main
           git push -f
+        continue-on-error: true
         env:
           GIT_AUTHOR_NAME: ${{ steps.import-gpg.outputs.name }}
           GIT_AUTHOR_EMAIL: ${{ steps.import-gpg.outputs.email }}
