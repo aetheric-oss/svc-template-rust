@@ -1,7 +1,13 @@
 [package]
-edition = "2021"
-name    = "svc-template-rust-client-rest"
-version = "0.1.0"
+categories.workspace   = true
+description            = "Types used to communicate with the REST API of svc-template-rust."
+edition.workspace      = true
+homepage.workspace     = true
+keywords.workspace     = true
+license-file.workspace = true
+name                   = "svc-template-rust-client-rest"
+repository.workspace   = true
+version                = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

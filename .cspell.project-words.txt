@@ -27,3 +27,4 @@ utoipa
 adsb
 openapi
 dotenv
+NocoDB

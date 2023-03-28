@@ -62,6 +62,9 @@ make docker-stop
 
 # Running examples (uses docker compose file)
 make rust-example-grpc
+
+# To locally build OpenAPI spec (for REST interfaces)
+make rust-openapi
 ```
 
 ### Formatting
