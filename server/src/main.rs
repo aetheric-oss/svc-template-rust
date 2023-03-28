@@ -1,23 +1,4 @@
-//! <center>
-//! <img src="https://github.com/Arrow-air/tf-github/raw/main/src/templates/doc-banner-services.png" style="height:250px" />
-//! </center>
-//! <div align="center">
-//!     <a href="https://github.com/Arrow-air/svc-template-rust/releases">
-//!         <img src="https://img.shields.io/github/v/release/Arrow-air/svc-template-rust?sort=semver&color=green" alt="GitHub stable release (latest by date)">
-//!     </a>
-//!     <a href="https://github.com/Arrow-air/svc-template-rust/releases">
-//!         <img src="https://img.shields.io/github/v/release/Arrow-air/svc-template-rust?include_prereleases" alt="GitHub release (latest by date including pre-releases)">
-//!     </a>
-//!     <a href="https://github.com/Arrow-air/svc-template-rust/tree/main">
-//!         <img src="https://github.com/arrow-air/svc-template-rust/actions/workflows/rust_ci.yml/badge.svg?branch=main" alt="Rust Checks">
-//!     </a>
-//!     <a href="https://discord.com/invite/arrow">
-//!         <img src="https://img.shields.io/discord/853833144037277726?style=plastic" alt="Arrow DAO Discord">
-//!     </a>
-//!     <br><br>
-//! </div>
-//!
-//! `svc-template-rust` is responsible for FIXME
+//! #![doc = include_str!("../README.md")]
 
 mod grpc_clients;
 ///module generated from proto/svc-template-rust-grpc.proto
@@ -184,7 +165,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     {
         let log_cfg: &str = "log4rs.yaml";
         if let Err(e) = log4rs::init_file(log_cfg, Default::default()) {
-            println!("(logger) could not parse {}. {}", log_cfg, e);
+            error!("(logger) could not parse {}. {}", log_cfg, e);
             panic!();
         }
     }
@@ -195,6 +176,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // --------------------------------------------------
 
     // Allow option to only generate the spec file to a given location
+    // locally: cargo run -- --api ./out/$(PACKAGE_NAME)-openapi.json
+    // or `make rust-openapi` and `make rust-validate-openapi`
     let args = Cli::parse();
     if let Some(target) = args.openapi {
         return generate_openapi_spec(&target);
