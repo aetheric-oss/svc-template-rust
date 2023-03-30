@@ -1,24 +1,25 @@
 [package]
-description = "Arrow template service GRPC server"
-edition     = "2021"                                                       # Allowed values are 2015, 2018, 2021
-homepage    = "https://www.arrowair.com/docs/documentation/services/intro"
-keywords    = ["vtol", "server", "template"]                               # max 5
-license     = "BUSL-1.1"
-name        = "svc-template-rust"
-repository  = "https://github.com/Arrow-air/svc-template-rust"
-version     = "0.2.0-develop.2"
+categories.workspace   = true
+description            = "Arrow template service GRPC server"
+edition.workspace      = true
+homepage.workspace     = true
+keywords.workspace     = true
+license-file.workspace = true
+name                   = "svc-template-rust"
+repository.workspace   = true
+version                = "0.2.0-develop.2"
 
-categories = [
-  "aerospace::drones",
-  "aerospace::protocols",
-] # max 5 -- https://crates.io/category_slugs
 
 [features]
 vendored-openssl = ['openssl/vendored']
 
 [dependencies]
+axum         = "0.6"
 cargo-husky  = "1"
 chrono       = { version = "0.4", features = ["serde"] }
+clap         = { version = "4.0", features = ["derive"] }
+dotenv       = "0.15"
+futures      = "0.3"
 hyper        = "0.14"
 log          = "0.4"
 openssl      = "0.10"
@@ -30,7 +31,11 @@ serde_json   = "1.0"
 tokio        = { version = "1.20", features = ["full"] }
 tokio-util   = "0.7"
 tonic        = "0.8"
-tonic-health = "0.7"
+tonic-health = "0.8"
+
+[dependencies.utoipa]
+features = ["axum_extras", "chrono"]
+version  = "3.1"
 
 [dependencies.log4rs]
 features = [

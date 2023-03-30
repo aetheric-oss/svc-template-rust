@@ -23,3 +23,8 @@ commitlint
 healthcheck
 appender
 appenders
+utoipa
+adsb
+openapi
+dotenv
+NocoDB
