@@ -1,10 +1,13 @@
-pub mod rest_types {
-    include!("../../openapi/types.rs");
-}
+//! Rest API implementations
 
-use crate::grpc_clients::GrpcClients;
+use crate::grpc::client::GrpcClients;
 use axum::{extract::Extension, Json};
 use hyper::StatusCode;
+
+/// openapi generated rest types
+pub mod rest_types {
+    include!("../../../openapi/types.rs");
+}
 
 // GRPC client types
 // use svc_scheduler_client_grpc::grpc::{
@@ -14,27 +17,8 @@ use hyper::StatusCode;
 // REST types the caller will use
 pub use rest_types::ExampleRequest;
 
-/// Writes an info! message to the app::req logger
-macro_rules! req_info {
-    ($($arg:tt)+) => {
-        log::info!(target: "app::req", $($arg)+);
-    };
-}
-
-/// Writes an error! message to the app::req logger
-macro_rules! req_error {
-    ($($arg:tt)+) => {
-        log::error!(target: "app::req", $($arg)+);
-    };
-}
-
-/// Writes a debug! message to the app::req logger
-macro_rules! req_debug {
-    ($($arg:tt)+) => {
-        log::debug!(target: "app::req", $($arg)+);
-    };
-}
-
+/// Provides a way to tell a caller if the service is healthy.
+/// Checks dependencies, making sure all connections can be made.
 #[utoipa::path(
     get,
     path = "/health",
@@ -47,7 +31,7 @@ macro_rules! req_debug {
 pub async fn health_check(
     Extension(mut _grpc_clients): Extension<GrpcClients>,
 ) -> Result<(), StatusCode> {
-    req_debug!("(health_check) entry.");
+    rest_debug!("(health_check) entry.");
 
     let ok = true;
 
@@ -58,36 +42,37 @@ pub async fn health_check(
     // let result = grpc_clients.storage.get_client().await;
     // if result.is_none() {
     //     let error_msg = "svc-storage unavailable.".to_string();
-    //     req_error!("(health_check) {}", &error_msg);
+    //     rest_error!("(health_check) {}", &error_msg);
     //     ok = false;
     // };
 
     // let result = grpc_clients.pricing.get_client().await;
     // if result.is_none() {
     //     let error_msg = "svc-pricing unavailable.".to_string();
-    //     req_error!("(health_check) {}", &error_msg);
+    //     rest_error!("(health_check) {}", &error_msg);
     //     ok = false;
     // };
 
     // let result = grpc_clients.scheduler.get_client().await;
     // if result.is_none() {
     //     let error_msg = "svc-scheduler unavailable.".to_string();
-    //     req_error!("(health_check) {}", &error_msg);
+    //     rest_error!("(health_check) {}", &error_msg);
     //     ok = false;
     // };
 
     match ok {
         true => {
-            req_info!("(health_check) healthy, all dependencies running.");
+            rest_debug!("(health_check) healthy, all dependencies running.");
             Ok(())
         }
         false => {
-            req_error!("(health_check) unhealthy, 1+ dependencies down.");
+            rest_error!("(health_check) unhealthy, 1+ dependencies down.");
             Err(StatusCode::SERVICE_UNAVAILABLE)
         }
     }
 }
 
+/// Example REST API function
 #[utoipa::path(
     post,
     path = "/template/example",
@@ -102,7 +87,7 @@ pub async fn example(
     Extension(mut _grpc_clients): Extension<GrpcClients>,
     Json(payload): Json<ExampleRequest>,
 ) -> Result<Json<String>, StatusCode> {
-    req_debug!("(query_vertiports) entry.");
+    rest_debug!("(query_vertiports) entry.");
 
     // Example request to outside GRPC client
 
@@ -124,7 +109,7 @@ pub async fn example(
     // let result = grpc_clients.storage.get_client().await;
     // let Some(mut client) = result else {
     //     let error_msg = "svc-storage unavailable.".to_string();
-    //     req_error!("(query_vertiports) {}", &error_msg);
+    //     rest_error!("(query_vertiports) {}", &error_msg);
     //     return Err(StatusCode::SERVICE_UNAVAILABLE);
     // };
 
@@ -132,11 +117,11 @@ pub async fn example(
     // let response = client.search(request).await;
     // match response {
     //     Ok(response) => {
-    //         req_info!("(example) response: {:?}", response);
+    //         rest_info!("(example) response: {:?}", response);
     //         Ok(Json(format!("{}!", payload.id)))
     //     }
     //     Err(e) => {
-    //         req_error!("(example) error: {}", e);
+    //         rest_error!("(example) error: {}", e);
     //         Err(StatusCode::INTERNAL_SERVER_ERROR)
     //     }
     // }
