@@ -3,17 +3,17 @@ syntax = "proto3";
 package grpc;
 
 // Heartbeat
-service TemplateRustRpc {
+service RpcService {
     // Common Interfaces
-    rpc isReady (QueryIsReady) returns (ReadyResponse);
+    rpc isReady (ReadyRequest) returns (ReadyResponse);
 }
 
-// Are you Ready?
-message QueryIsReady {
+// Ready Request object
+message ReadyRequest {
     // No arguments
 }
 
-// I'm Ready
+// Ready Response object
 message ReadyResponse {
 
     // True if ready

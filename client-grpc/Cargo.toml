@@ -1,13 +1,14 @@
 [package]
+description = "Arrow template service GRPC client"
+name        = "svc-template-rust-client-grpc"
+version     = "0.2.0-develop.2"
+
 categories.workspace   = true
-description            = "Arrow template service GRPC client"
 edition.workspace      = true
 homepage.workspace     = true
 keywords.workspace     = true
 license-file.workspace = true
-name                   = "svc-template-rust-client-grpc"
 repository.workspace   = true
-version                = "0.2.0-develop.2"
 
 [dependencies]
 prost       = "0.11"

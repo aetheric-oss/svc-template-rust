@@ -2,13 +2,13 @@
 members = ["server", "client-grpc", "client-rest"]
 
 [workspace.package]
-edition = "2021"
-homepage = "https://www.arrowair.com/docs/documentation/services/intro"
-license = "BUSL-1.1"
+edition      = "2021"
+homepage     = "https://www.arrowair.com/docs/documentation/services/intro"
+keywords     = ["vtol", "server", "template"]                               # max 5
 license-file = "LICENSE"
-repository = "https://github.com/Arrow-air/svc-template-rust"
+repository   = "https://github.com/Arrow-air/svc-template-rust"
+
 categories = [
   "aerospace::drones",
   "aerospace::protocols",
 ] # max 5 -- https://crates.io/category_slugs
-keywords = ["vtol", "server", "template"] # max 5
