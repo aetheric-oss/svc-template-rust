@@ -14,12 +14,21 @@ pub struct Config {
     pub docker_port_grpc: u16,
     /// port to be used for REST server
     pub docker_port_rest: u16,
+    /// host of template_rust gRPC server
+    pub template_rust_host_grpc: String,
+    /// port of template_rust gRPC server
+    pub template_rust_port_grpc: u16,
+    /// host of template_rust rest server
+    pub template_rust_host_rest: String,
+    /// port of template_rust rest server
+    pub template_rust_port_rest: u16,
     /// path to log configuration YAML file
     pub log_config: String,
 }
 
 impl Default for Config {
     fn default() -> Self {
+        log::warn!("Creating Config object with default values.");
         Self::new()
     }
 }
@@ -30,12 +39,16 @@ impl Config {
         Config {
             docker_port_grpc: 50051,
             docker_port_rest: 8000,
+            template_rust_port_grpc: 50051,
+            template_rust_host_grpc: "localhost".to_owned(),
+            template_rust_port_rest: 8000,
+            template_rust_host_rest: "localhost".to_owned(),
             log_config: String::from("log4rs.yaml"),
         }
     }
 
     /// Create a new `Config` object using environment variables
-    pub fn from_env() -> Result<Self, ConfigError> {
+    pub fn try_from_env() -> Result<Self, ConfigError> {
         // read .env file if present
         dotenv().ok();
 

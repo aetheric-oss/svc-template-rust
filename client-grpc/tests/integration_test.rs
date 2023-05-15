@@ -4,6 +4,7 @@
 async fn test_client_requests_and_logs() {
     use logtest::Logger;
 
+    use svc_template_rust_client_grpc::service::Client as ServiceClient;
     use svc_template_rust_client_grpc::*;
     use tonic::transport::Channel;
 
@@ -14,25 +15,20 @@ async fn test_client_requests_and_logs() {
     let client: GrpcClient<TemplateRustClient<Channel>> =
         GrpcClient::new_client(&server_host, server_port, name);
 
-    let connection = client.get_client().await;
-    println!("{:?}", connection);
-    assert!(connection.is_ok());
-
     // Start the logger.
     let mut logger = Logger::start();
 
-    // Send is_ready request to generate log message
-    let result = connection
-        .unwrap()
-        .is_ready(tonic::Request::new(ReadyRequest {}))
-        .await;
-    println!("{:?}", result);
-    assert!(result.is_ok());
+    //test_is_ready_request_logs
+    {
+        let result = client.is_ready(tonic::Request::new(ReadyRequest {})).await;
+        println!("{:?}", result);
+        assert!(result.is_ok());
 
-    // Search for the expected log message
-    assert!(logger.any(|log| {
-        let message = log.args();
-        println!("{:?}", message);
-        log.args() == "(grpc is_ready) entry."
-    }));
+        // Search for the expected log message
+        assert!(logger.any(|log| {
+            let message = log.args();
+            println!("{:?}", message);
+            log.args() == format!("(is_ready) {} client MOCK.", name)
+        }));
+    }
 }

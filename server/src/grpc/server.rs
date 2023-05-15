@@ -23,13 +23,15 @@ use tonic::{Request, Response, Status};
 pub struct GrpcServerImpl {}
 
 #[tonic::async_trait]
+#[cfg(not(any(feature = "mock_server", test)))]
 impl RpcService for GrpcServerImpl {
     /// Returns ready:true when service is available
     async fn is_ready(
         &self,
-        _request: Request<ReadyRequest>,
+        request: Request<ReadyRequest>,
     ) -> Result<Response<ReadyResponse>, Status> {
-        grpc_debug!("(grpc is_ready) entry.");
+        grpc_info!("(is_ready) template_rust.");
+        grpc_debug!("(is_ready) request: {:?}", request);
         let response = ReadyResponse { ready: true };
         Ok(Response::new(response))
     }
@@ -60,8 +62,8 @@ pub async fn grpc_server(config: Config) {
         }
     };
 
-    let (mut health_reporter, health_service) = tonic_health::server::health_reporter();
     let imp = GrpcServerImpl::default();
+    let (mut health_reporter, health_service) = tonic_health::server::health_reporter();
     health_reporter
         .set_serving::<RpcServiceServer<GrpcServerImpl>>()
         .await;
@@ -79,4 +81,18 @@ pub async fn grpc_server(config: Config) {
             grpc_error!("could not start gRPC server: {}", e);
         }
     };
+}
+
+#[tonic::async_trait]
+#[cfg(any(feature = "mock_server", test))]
+impl RpcService for GrpcServerImpl {
+    async fn is_ready(
+        &self,
+        request: Request<ReadyRequest>,
+    ) -> Result<Response<ReadyResponse>, Status> {
+        grpc_warn!("(is_ready) template_rust server MOCK.");
+        grpc_debug!("(is_ready) request: {:?}", request);
+        let response = ReadyResponse { ready: true };
+        Ok(Response::new(response))
+    }
 }

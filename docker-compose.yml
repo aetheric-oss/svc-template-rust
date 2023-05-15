@@ -23,6 +23,9 @@ services:
       - type: bind
         source: logs/
         target: /logs/
+    environment:
+      - LOG_CONFIG
+
   example:
     links:
       - web-server
@@ -38,6 +41,9 @@ services:
       - type: bind
         source: "${SOURCE_PATH}/.cargo/registry"
         target: "/usr/local/cargo/registry"
+      - type: bind
+        source: log4rs.yaml
+        target: ${LOG_CONFIG}
     environment:
       - SERVER_HOSTNAME
       - SERVER_PORT_GRPC

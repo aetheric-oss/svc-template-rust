@@ -1,6 +1,6 @@
 //! Rest API implementations
 
-use crate::grpc::client::GrpcClients;
+use crate::grpc::client::{ClientConnect, GrpcClients};
 use axum::{extract::Extension, Json};
 use hyper::StatusCode;
 
@@ -9,7 +9,7 @@ pub mod rest_types {
     include!("../../../openapi/types.rs");
 }
 
-// GRPC client types
+// gRPC client types
 // use svc_scheduler_client_grpc::grpc::{
 //     ConfirmItineraryRequest, Id, Itinerary as SchedulerItinerary, QueryFlightPlan,
 // };
@@ -29,36 +29,37 @@ pub use rest_types::ExampleRequest;
     )
 )]
 pub async fn health_check(
-    Extension(mut _grpc_clients): Extension<GrpcClients>,
+    Extension(grpc_clients): Extension<GrpcClients>,
 ) -> Result<(), StatusCode> {
     rest_debug!("(health_check) entry.");
 
-    let ok = true;
+    let mut ok = true;
 
-    // FIXME - uncomment this when you have a dependency
+    // FIXME - uncomment this when you have a dependency, add dependencies when needed.
     // This health check is to verify that ALL dependencies of this
     // microservice are running.
+    if grpc_clients.template_rust.get_client().await.is_err() {
+        let error_msg = "svc-template-rust unavailable.".to_string();
+        rest_error!("(health_check) {}.", &error_msg);
+        ok = false;
+    }
+    // if grpc_clients.storage.get_adsb_client().await.is_err() {
+    //    let error_msg = "svc-storage adsb unavailable.".to_string();
+    //    rest_error!("(health_check) {}.", &error_msg);
+    //    ok = false;
+    // }
 
-    // let result = grpc_clients.storage.get_client().await;
-    // if result.is_none() {
-    //     let error_msg = "svc-storage unavailable.".to_string();
-    //     rest_error!("(health_check) {}", &error_msg);
-    //     ok = false;
-    // };
-
-    // let result = grpc_clients.pricing.get_client().await;
-    // if result.is_none() {
+    // if grpc_clients.pricing.get_client().await.is_err() {
     //     let error_msg = "svc-pricing unavailable.".to_string();
     //     rest_error!("(health_check) {}", &error_msg);
     //     ok = false;
-    // };
+    // }
 
-    // let result = grpc_clients.scheduler.get_client().await;
-    // if result.is_none() {
+    // if grpc_clients.scheduler.get_client().await.is_err() {
     //     let error_msg = "svc-scheduler unavailable.".to_string();
     //     rest_error!("(health_check) {}", &error_msg);
     //     ok = false;
-    // };
+    // }
 
     match ok {
         true => {
@@ -89,7 +90,7 @@ pub async fn example(
 ) -> Result<Json<String>, StatusCode> {
     rest_debug!("(query_vertiports) entry.");
 
-    // Example request to outside GRPC client
+    // Example request to outside gRPC client
 
     // // Build request
     // let degree_range: f32 = 2.0;
