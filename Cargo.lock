@@ -90,6 +90,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bddcadddf5e9015d310179a59bb28c4d4b9920ad0f11e8e14dbadf654890c9a6"
 
 [[package]]
+name = "arrow-macros-core"
+version = "0.1.1-develop.2"
+source = "git+https://github.com/Arrow-air/lib-common.git?tag=v0.1.1-develop.2#c7e0fc4918d3346a13ab84e2d4fc16d430a60c59"
+dependencies = [
+ "proc-macro-error",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.107",
+]
+
+[[package]]
+name = "arrow-macros-derive"
+version = "0.1.1-develop.2"
+source = "git+https://github.com/Arrow-air/lib-common.git?tag=v0.1.1-develop.2#c7e0fc4918d3346a13ab84e2d4fc16d430a60c59"
+dependencies = [
+ "arrow-macros-core",
+ "proc-macro-error",
+ "proc-macro2",
+]
+
+[[package]]
 name = "async-stream"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -182,6 +203,15 @@ name = "base64"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e1b586273c5702936fe7b7d6896644d8be71e6314cfe09d3167c95f712589e8"
+
+[[package]]
+name = "basic-toml"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c0de75129aa8d0cceaf750b89013f0e08804d6ec61416da787b35ad0d7cddf1"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "bitflags"
@@ -577,6 +607,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "glob"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d2fabcfbdc87f4758337ca535fb41a6d701b65693ce38287d856d1674551ec9b"
+
+[[package]]
 name = "h2"
 version = "0.3.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -807,6 +843,22 @@ name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
+
+[[package]]
+name = "lib-common"
+version = "0.1.1-develop.2"
+source = "git+https://github.com/Arrow-air/lib-common.git?tag=v0.1.1-develop.2#c7e0fc4918d3346a13ab84e2d4fc16d430a60c59"
+dependencies = [
+ "arrow-macros-derive",
+ "cargo-husky",
+ "chrono",
+ "futures",
+ "log",
+ "prost",
+ "prost-types",
+ "tonic",
+ "trybuild",
+]
 
 [[package]]
 name = "libc"
@@ -1555,6 +1607,7 @@ dependencies = [
 name = "svc-template-rust-client-grpc"
 version = "0.2.0-develop.2"
 dependencies = [
+ "lib-common",
  "prost",
  "prost-types",
  "tokio",
@@ -1742,6 +1795,7 @@ dependencies = [
  "axum",
  "base64",
  "bytes",
+ "flate2",
  "futures-core",
  "futures-util",
  "h2",
@@ -1870,6 +1924,21 @@ name = "try-lock"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3528ecfd12c466c6f163363caf2d02a71161dd5e1cc6ae7b34207ea2d42d81ed"
+
+[[package]]
+name = "trybuild"
+version = "1.0.80"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "501dbdbb99861e4ab6b60eb6a7493956a9defb644fd034bc4a5ef27c693c8a3a"
+dependencies = [
+ "basic-toml",
+ "glob",
+ "once_cell",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "termcolor",
+]
 
 [[package]]
 name = "typemap-ors"
