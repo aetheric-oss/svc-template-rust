@@ -1,9 +1,26 @@
-//! Example for writing an integration test.
-//! More information: https://doc.rust-lang.org/book/testing-rust.html#integration-tests
+//! Integration Tests
 
-// use tmp_lib;
+#[tokio::test]
+async fn test_server_requests_and_logs() {
+    use logtest::Logger;
 
-// #[test]
-// fn it_add_one() {
-//     assert_eq!(2, tmp_lib::add_one(1));
-// }
+    use svc_template_rust::grpc::server::*;
+
+    // Start the logger.
+    let mut logger = Logger::start();
+
+    //test_is_ready_request_logs
+    {
+        let imp = GrpcServerImpl::default();
+        let result = imp.is_ready(tonic::Request::new(ReadyRequest {})).await;
+        assert!(result.is_ok());
+        let result: ReadyResponse = result.unwrap().into_inner();
+        assert_eq!(result.ready, true);
+
+        assert!(logger.any(|log| {
+            let message = log.args();
+            println!("{:?}", message);
+            log.args() == format!("(is_ready) {} server MOCK.", "template_rust")
+        }));
+    }
+}

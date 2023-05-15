@@ -9,8 +9,6 @@ use lib_common::log_macros;
 pub mod client {
     //! Client Library: Client Functions, Structs, Traits
     #![allow(unused_qualifications)]
-    #[cfg(not(tarpaulin_include))]
-    // no_coverage: Generated file, includes functions which are not being used.
     include!("grpc.rs");
 
     use tonic::async_trait;
@@ -45,8 +43,6 @@ pub mod client {
 pub mod client {
     //! Client Library: Client Functions, Structs, Traits
     #![allow(unused_qualifications)]
-    #[cfg(not(tarpaulin_include))]
-    // no_coverage: Generated file, includes functions which are not being used.
     include!("grpc.rs");
 
     use tonic::async_trait;

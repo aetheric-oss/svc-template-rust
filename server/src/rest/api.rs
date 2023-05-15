@@ -129,3 +129,23 @@ pub async fn example(
 
     Ok(Json(format!("{}!", payload.id)))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::config::Config;
+
+    #[tokio::test]
+    async fn test_health_check_success() {
+        // Mock the GrpcClients extension
+        let config = Config::default();
+        let grpc_clients = GrpcClients::default(config); // Replace with your own mock implementation
+
+        // Call the health_check function
+        let result = health_check(Extension(grpc_clients)).await;
+
+        // Assert the expected result
+        println!("{:?}", result);
+        assert!(result.is_ok());
+    }
+}

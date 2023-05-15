@@ -34,3 +34,13 @@ pub fn generate_openapi_spec(target: &str) -> Result<(), Box<dyn std::error::Err
 
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_openapi_spec_generation() {
+        assert!(generate_openapi_spec("/tmp/generate_openapi_spec.out").is_ok());
+    }
+}

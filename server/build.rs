@@ -11,6 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client_config = server_config.clone();
 
     client_config
+        .client_mod_attribute("grpc", "#[cfg(not(tarpaulin_include))]")
         .build_server(false)
         .out_dir("../client-grpc/src/")
         .compile(&[proto_file], &[proto_dir])?;

@@ -36,6 +36,9 @@ impl Default for Config {
 impl Config {
     /// Default values for Config
     pub fn new() -> Self {
+        println!(
+            "Could not find all required values in the environment. Using default config values."
+        );
         Config {
             docker_port_grpc: 50051,
             docker_port_rest: 8000,
@@ -43,7 +46,7 @@ impl Config {
             template_rust_host_grpc: "localhost".to_owned(),
             template_rust_port_rest: 8000,
             template_rust_host_rest: "localhost".to_owned(),
-            log_config: String::from("log4rs.yaml"),
+            log_config: String::from("/log4rs.yaml"),
         }
     }
 
@@ -55,9 +58,59 @@ impl Config {
         config::Config::builder()
             .set_default("docker_port_grpc", 50051)?
             .set_default("docker_port_rest", 8000)?
-            .set_default("log_config", String::from("log4rs.yaml"))?
+            .set_default("log_config", "./log4rs.yaml")?
             .add_source(Environment::default().separator("__"))
             .build()?
             .try_deserialize()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_config_from_default() {
+        let config = Config::default();
+
+        assert_eq!(config.docker_port_grpc, 50051);
+        assert_eq!(config.docker_port_rest, 8000);
+        assert_eq!(config.template_rust_port_grpc, 50051);
+        assert_eq!(config.template_rust_host_grpc, String::from("localhost"));
+        assert_eq!(config.template_rust_port_rest, 8000);
+        assert_eq!(config.template_rust_host_rest, String::from("localhost"));
+        assert_eq!(config.log_config, String::from("log4rs.yaml"));
+    }
+
+    #[tokio::test]
+    async fn test_config_from_env() {
+        async move {
+            std::env::set_var("DOCKER_PORT_GRPC", "6789");
+            std::env::set_var("DOCKER_PORT_REST", "9876");
+            std::env::set_var("TEMPLATE_RUST_HOST_GRPC", "test_host_grpc");
+            std::env::set_var("TEMPLATE_RUST_PORT_GRPC", "12345");
+            std::env::set_var("TEMPLATE_RUST_HOST_REST", "test_host_rest");
+            std::env::set_var("TEMPLATE_RUST_PORT_REST", "54321");
+            std::env::set_var("LOG_CONFIG", "config_file.yaml");
+
+            let config = Config::try_from_env();
+            assert!(config.is_ok());
+            let config = config.unwrap();
+
+            assert_eq!(config.docker_port_grpc, 6789);
+            assert_eq!(config.docker_port_rest, 9876);
+            assert_eq!(config.template_rust_port_grpc, 12345);
+            assert_eq!(
+                config.template_rust_host_grpc,
+                String::from("test_host_grpc")
+            );
+            assert_eq!(config.template_rust_port_rest, 54321);
+            assert_eq!(
+                config.template_rust_host_rest,
+                String::from("test_host_rest")
+            );
+            assert_eq!(config.log_config, String::from("config_file.yaml"));
+        }
+        .await
     }
 }

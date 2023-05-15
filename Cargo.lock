@@ -1615,13 +1615,45 @@ dependencies = [
  "lib-common",
  "log",
  "log4rs",
+ "logtest",
  "openssl",
  "prost",
  "prost-build",
  "prost-types",
  "serde",
  "serde_json",
- "svc-template-rust-client-grpc 0.2.0-develop.2 (git+https://github.com/Arrow-air/svc-template-rust.git?branch=owlot/refactor-use-lib-common)",
+ "svc-template-rust 0.2.0-develop.4",
+ "svc-template-rust-client-grpc 0.2.0-develop.4 (git+https://github.com/Arrow-air/svc-template-rust.git?tag=v0.2.0-develop.4)",
+ "tokio",
+ "tokio-util",
+ "tonic",
+ "tonic-build",
+ "tonic-health",
+ "utoipa",
+]
+
+[[package]]
+name = "svc-template-rust"
+version = "0.2.0-develop.4"
+source = "git+https://github.com/Arrow-air/svc-template-rust.git?tag=v0.2.0-develop.4#8056706bc214158644d80fa8a8662a01e0c5db5f"
+dependencies = [
+ "anyhow",
+ "axum",
+ "cargo-husky",
+ "chrono",
+ "clap",
+ "config",
+ "dotenv",
+ "futures",
+ "hyper",
+ "log",
+ "log4rs",
+ "openssl",
+ "prost",
+ "prost-build",
+ "prost-types",
+ "serde",
+ "serde_json",
  "tokio",
  "tokio-util",
  "tonic",
@@ -1639,8 +1671,8 @@ dependencies = [
  "logtest",
  "prost",
  "prost-types",
- "svc-template-rust",
- "svc-template-rust-client-grpc 0.2.0-develop.2",
+ "svc-template-rust 0.2.0-develop.4",
+ "svc-template-rust-client-grpc 0.2.0-develop.4",
  "tokio",
  "tonic",
  "tower",
@@ -1648,14 +1680,17 @@ dependencies = [
 
 [[package]]
 name = "svc-template-rust-client-grpc"
-version = "0.2.0-develop.2"
-source = "git+https://github.com/Arrow-air/svc-template-rust.git?branch=owlot/refactor-use-lib-common#f371ef94105dcd5d0e1a530d69b3179edbaaf602"
+version = "0.2.0-develop.4"
+source = "git+https://github.com/Arrow-air/svc-template-rust.git?tag=v0.2.0-develop.4#8056706bc214158644d80fa8a8662a01e0c5db5f"
 dependencies = [
  "lib-common",
  "log",
  "prost",
  "prost-types",
+ "svc-template-rust 0.2.0-develop.4 (git+https://github.com/Arrow-air/svc-template-rust.git?tag=v0.2.0-develop.4)",
+ "tokio",
  "tonic",
+ "tower",
 ]
 
 [[package]]

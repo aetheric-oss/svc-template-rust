@@ -41,8 +41,8 @@ tonic-health = "0.8"
 
 # FIXME: This is used as an example, you can point to other services's clients instead.
 [dependencies.svc-template-rust-client-grpc]
-branch = "owlot/refactor-use-lib-common"
-git    = "https://github.com/Arrow-air/svc-template-rust.git"
+git = "https://github.com/Arrow-air/svc-template-rust.git"
+tag = "v0.2.0-develop.4"
 
 [dependencies.utoipa]
 features = ["axum_extras", "chrono"]
@@ -57,10 +57,24 @@ features = [
 ]
 version = "1.2"
 
+[dev-dependencies]
+logtest = "2.0"
+
 [dev-dependencies.cargo-husky]
 default-features = false          # Disable features which are enabled by default
 features         = ["user-hooks"]
 version          = "1"
+
+# FIXME: This is used as an example, you can point to other services's clients instead.
+[dev-dependencies.svc-template-rust-client-grpc]
+features = ["mock_client"]
+git      = "https://github.com/Arrow-air/svc-template-rust.git"
+tag      = "v0.2.0-develop.4"
+
+# Make sure we enable the 'mock_server' features when running tests
+[dev-dependencies.svc-template-rust]
+features = ["mock_server"]
+path     = "."
 
 [build-dependencies]
 tonic-build = "0.8"

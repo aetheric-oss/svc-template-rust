@@ -15,6 +15,7 @@ pub struct ReadyResponse {
     pub ready: bool,
 }
 /// Generated client implementations.
+#[cfg(not(tarpaulin_include))]
 pub mod rpc_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;

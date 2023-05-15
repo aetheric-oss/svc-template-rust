@@ -5,10 +5,8 @@ pub mod grpc_server {
     #![allow(unused_qualifications, missing_docs)]
     tonic::include_proto!("grpc");
 }
-pub use grpc_server::rpc_service_server::RpcServiceServer;
-
-use grpc_server::rpc_service_server::RpcService;
-use grpc_server::{ReadyRequest, ReadyResponse};
+pub use grpc_server::rpc_service_server::{RpcService, RpcServiceServer};
+pub use grpc_server::{ReadyRequest, ReadyResponse};
 
 use crate::config::Config;
 use crate::shutdown_signal;
@@ -94,5 +92,19 @@ impl RpcService for GrpcServerImpl {
         grpc_debug!("(is_ready) request: {:?}", request);
         let response = ReadyResponse { ready: true };
         Ok(Response::new(response))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn test_grpc_server_is_ready() {
+        let imp = GrpcServerImpl::default();
+        let result = imp.is_ready(Request::new(ReadyRequest {})).await;
+        assert!(result.is_ok());
+        let result: ReadyResponse = result.unwrap().into_inner();
+        assert_eq!(result.ready, true);
     }
 }

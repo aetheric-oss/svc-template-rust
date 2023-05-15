@@ -34,3 +34,15 @@ impl GrpcClients {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn test_grpc_client_default() {
+        let config = crate::config::Config::default();
+        let clients = GrpcClients::default(config);
+        assert_eq!(clients.template_rust.get_name(), "template_rust")
+    }
+}
