@@ -46,7 +46,7 @@ impl Config {
             template_rust_host_grpc: "localhost".to_owned(),
             template_rust_port_rest: 8000,
             template_rust_host_rest: "localhost".to_owned(),
-            log_config: String::from("/log4rs.yaml"),
+            log_config: String::from("./log4rs.yaml"),
         }
     }
 
@@ -79,7 +79,7 @@ mod tests {
         assert_eq!(config.template_rust_host_grpc, String::from("localhost"));
         assert_eq!(config.template_rust_port_rest, 8000);
         assert_eq!(config.template_rust_host_rest, String::from("localhost"));
-        assert_eq!(config.log_config, String::from("log4rs.yaml"));
+        assert_eq!(config.log_config, String::from("./log4rs.yaml"));
     }
 
     #[tokio::test]
