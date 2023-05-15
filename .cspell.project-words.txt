@@ -28,3 +28,4 @@ adsb
 openapi
 dotenv
 NocoDB
+logtest

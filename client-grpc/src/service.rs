@@ -3,7 +3,7 @@
 #[tonic::async_trait]
 pub trait Client<T>
 where
-    Self: Sized + super::Client<T> + super::ClientConnect<T>,
+    Self: Sized + lib_common::grpc::Client<T> + lib_common::grpc::ClientConnect<T>,
     T: Send + Clone,
 {
     /// The type expected for ReadyRequest structs.

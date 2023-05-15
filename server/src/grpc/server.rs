@@ -5,7 +5,9 @@ pub mod grpc_server {
     #![allow(unused_qualifications, missing_docs)]
     tonic::include_proto!("grpc");
 }
-use grpc_server::rpc_service_server::{RpcService, RpcServiceServer};
+pub use grpc_server::rpc_service_server::RpcServiceServer;
+
+use grpc_server::rpc_service_server::RpcService;
 use grpc_server::{ReadyRequest, ReadyResponse};
 
 use crate::config::Config;
@@ -18,10 +20,10 @@ use tonic::{Request, Response, Status};
 
 /// struct to implement the gRPC server functions
 #[derive(Debug, Default, Copy, Clone)]
-pub struct GRPCServerImpl {}
+pub struct GrpcServerImpl {}
 
 #[tonic::async_trait]
-impl RpcService for GRPCServerImpl {
+impl RpcService for GrpcServerImpl {
     /// Returns ready:true when service is available
     async fn is_ready(
         &self,
@@ -48,7 +50,7 @@ impl RpcService for GRPCServerImpl {
 pub async fn grpc_server(config: Config) {
     grpc_debug!("(grpc_server) entry.");
 
-    // GRPC Server
+    // Grpc Server
     let grpc_port = config.docker_port_grpc;
     let full_grpc_addr: SocketAddr = match format!("[::]:{}", grpc_port).parse() {
         Ok(addr) => addr,
@@ -59,13 +61,13 @@ pub async fn grpc_server(config: Config) {
     };
 
     let (mut health_reporter, health_service) = tonic_health::server::health_reporter();
-    let imp = GRPCServerImpl::default();
+    let imp = GrpcServerImpl::default();
     health_reporter
-        .set_serving::<RpcServiceServer<GRPCServerImpl>>()
+        .set_serving::<RpcServiceServer<GrpcServerImpl>>()
         .await;
 
     //start server
-    grpc_info!("Starting GRPC servers on: {}.", full_grpc_addr);
+    grpc_info!("Starting gRPC services on: {}.", full_grpc_addr);
     match Server::builder()
         .add_service(health_service)
         .add_service(RpcServiceServer::new(imp))
