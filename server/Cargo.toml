@@ -1,7 +1,7 @@
 [package]
 description = "Arrow template service GRPC server"
 name        = "svc-template-rust"
-version     = "0.2.0-develop.4"
+version     = "0.2.0-develop.5"
 
 categories.workspace   = true
 edition.workspace      = true
