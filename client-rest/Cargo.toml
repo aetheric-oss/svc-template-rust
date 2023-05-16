@@ -1,7 +1,7 @@
 [package]
 description = "Types used to communicate with the REST API of svc-template-rust."
 name        = "svc-template-rust-client-rest"
-version     = "0.1.0"
+version     = "0.2.0-develop.4"
 
 categories.workspace   = true
 edition.workspace      = true

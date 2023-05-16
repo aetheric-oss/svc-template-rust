@@ -1601,7 +1601,7 @@ checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "svc-template-rust"
-version = "0.2.0-develop.2"
+version = "0.2.0-develop.4"
 dependencies = [
  "anyhow",
  "axum",
@@ -1630,7 +1630,7 @@ dependencies = [
 
 [[package]]
 name = "svc-template-rust-client-grpc"
-version = "0.2.0-develop.2"
+version = "0.2.0-develop.4"
 dependencies = [
  "lib-common",
  "log",
@@ -1646,7 +1646,7 @@ dependencies = [
 
 [[package]]
 name = "svc-template-rust-client-rest"
-version = "0.1.0"
+version = "0.2.0-develop.4"
 dependencies = [
  "chrono",
  "hyper",
