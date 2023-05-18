@@ -1,18 +1,22 @@
 ## DO NOT EDIT!
 # This file was provisioned by Terraform
 # File origin: https://github.com/Arrow-air/tf-github/tree/main/src/templates/rust-svc/Dockerfile
-FROM --platform=$BUILDPLATFORM ghcr.io/arrow-air/tools/arrow-rust:latest AS build
+FROM --platform=$BUILDPLATFORM ghcr.io/arrow-air/tools/arrow-rust:1.2 AS build
 
 ENV CARGO_INCREMENTAL=1
 ENV RUSTC_BOOTSTRAP=0
+ARG ENABLE_FEATURES=
 
 COPY . /usr/src/app
 
 # perl and build-base are needed to build openssl, see:
 # https://github.com/openssl/openssl/blob/master/INSTALL.md#prerequisites
-RUN apk -U add perl build-base ; cd /usr/src/app ; cargo build --release --features=vendored-openssl
+RUN apk -U add perl build-base
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    cd /usr/src/app && \
+    cargo build --release --features=vendored-openssl,${ENABLE_FEATURES}
 
-FROM --platform=$TARGETPLATFORM ghcr.io/grpc-ecosystem/grpc-health-probe:v0.4.14 AS grpc-health-probe
+FROM --platform=$TARGETPLATFORM ghcr.io/grpc-ecosystem/grpc-health-probe:v0.4.19 AS grpc-health-probe
 
 FROM --platform=$TARGETPLATFORM alpine:latest
 ARG PACKAGE_NAME=

@@ -3,7 +3,8 @@
 # File origin: https://github.com/Arrow-air/tf-github/tree/main/src/templates/all/.make/rust.mk
 
 RUST_IMAGE_NAME     ?= ghcr.io/arrow-air/tools/arrow-rust
-RUST_IMAGE_TAG      ?= 1.1
+RUST_IMAGE_TAG      ?= 1.2
+DOCKER_IMAGE_NAME   ?= $(PACKAGE_NAME)
 CARGO_MANIFEST_PATH ?= Cargo.toml
 CARGO_INCREMENTAL   ?= 1
 RUSTC_BOOTSTRAP     ?= 0
@@ -12,13 +13,24 @@ PUBLISH_DRY_RUN     ?= 1
 OUTPUTS_PATH        ?= $(SOURCE_PATH)/out
 ADDITIONAL_OPT      ?=
 
+PACKAGE_BUILD_FEATURES   ?= ""
+PACKAGE_RELEASE_FEATURES ?= ""
+# Keep backwards compatible for now (keeping PACKAGE_TEST_FEATURES in addition to PACKAGE_UT_FEATURES), can be removed once all repo's have their .env.repo file updated
+PACKAGE_TEST_FEATURES    ?= ""
+PACKAGE_UT_FEATURES      ?= $(PACKAGE_TEST_FEATURES)
+PACKAGE_IT_FEATURES      ?= ""
+
+# Can contain quotes, but we don't want quotes
+EXCLUSIVE_FEATURES_TEST  := $(shell echo ${EXCLUSIVE_FEATURES_TEST})
+COMMA := ,
+
 # function with a generic template to run docker with the required values
 # Accepts $1 = command to run, $2 = additional command flags (optional)
 ifeq ("$(CARGO_MANIFEST_PATH)", "")
 cargo_run = echo "$(BOLD)$(YELLOW)No Cargo.toml found in any of the subdirectories, skipping cargo check...$(SGR0)"
 else
 cargo_run = docker run \
-	--name=$(DOCKER_NAME)-$@ \
+	--name=$(DOCKER_NAME)-$(subst $(COMMA),_,$@) \
 	--rm \
 	--user `id -u`:`id -g` \
 	--workdir=/usr/src/app \
@@ -32,7 +44,9 @@ cargo_run = docker run \
 endif
 
 rust-docker-pull:
-	@echo docker pull -q $(RUST_IMAGE_NAME):$(RUST_IMAGE_TAG)
+	@docker pull -q $(RUST_IMAGE_NAME):$(RUST_IMAGE_TAG)
+latest-docker-pull:
+	@docker pull -q $(DOCKER_IMAGE_NAME):latest || true
 
 .help-rust:
 	@echo ""
@@ -45,12 +59,12 @@ rust-docker-pull:
 	@echo "                     uses '--dry-run' by default, automation uses PUBLISH_DRY_RUN=0 to upload crate"
 	@echo "  $(BOLD)rust-clean$(SGR0)       -- Run 'cargo clean'"
 	@echo "  $(BOLD)rust-check$(SGR0)       -- Run 'cargo check'"
-	@echo "  $(BOLD)rust-test$(SGR0)        -- Run 'cargo test --all'"
+	@echo "  $(BOLD)rust-test$(SGR0)        -- Run 'cargo test --workspace'"
 	@echo "  $(BOLD)rust-example-ARG$(SGR0) -- Run 'cargo run --example ARG' (replace ARG with example name)"
-	@echo "  $(BOLD)rust-clippy$(SGR0)      -- Run 'cargo clippy --all -- -D warnings'"
-	@echo "  $(BOLD)rust-fmt$(SGR0)         -- Run 'cargo fmt --all -- --check' to check rust file formats."
-	@echo "  $(BOLD)rust-tidy$(SGR0)        -- Run 'cargo fmt --all' to fix rust file formats if needed."
-	@echo "  $(BOLD)rust-doc$(SGR0)         -- Run 'cargo doc --all' to produce rust documentation."
+	@echo "  $(BOLD)rust-clippy$(SGR0)      -- Run 'cargo clippy --workspace -- -D warnings'"
+	@echo "  $(BOLD)rust-fmt$(SGR0)         -- Run 'cargo fmt --workspace -- --check' to check rust file formats."
+	@echo "  $(BOLD)rust-tidy$(SGR0)        -- Run 'cargo fmt --workspace' to fix rust file formats if needed."
+	@echo "  $(BOLD)rust-doc$(SGR0)         -- Run 'cargo doc --workspace' to produce rust documentation."
 	@echo "  $(BOLD)rust-openapi$(SGR0)     -- Run 'cargo run -- --api ./out/$(PACKAGE_NAME)-openapi.json'."
 	@echo "  $(BOLD)rust-validate-openapi$(SGR0) -- Run validation on the ./out/$(PACKAGE_NAME)-openapi.json."
 	@echo "  $(BOLD)rust-grpc-api$(SGR0)    -- Generate a $(PACKAGE_NAME)-grpc-api.json from proto/*.proto files."
@@ -65,15 +79,15 @@ check-cargo-registry:
 check-logs-dir:
 	if [ ! -d "$(SOURCE_PATH)/logs" ]; then mkdir -p "$(SOURCE_PATH)/logs" ; fi
 
-.SILENT: check-cargo-registry check-logs-dir rust-docker-pull
+.SILENT: check-cargo-registry check-logs-dir rust-docker-pull latest-docker-pull
 
 rust-build: check-cargo-registry rust-docker-pull
-	@echo "$(CYAN)Running cargo build...$(SGR0)"
-	@$(call cargo_run,build)
+	@echo "$(CYAN)Running cargo build with features [$(PACKAGE_BUILD_FEATURES)]...$(SGR0)"
+	@$(call cargo_run,build, --features $(PACKAGE_BUILD_FEATURES) )
 
 rust-release: check-cargo-registry rust-docker-pull
-	@echo "$(CYAN)Running cargo build --release...$(SGR0)"
-	@$(call cargo_run,build,--release --target $(RELEASE_TARGET))
+	@echo "$(CYAN)Running cargo build --release with features [$(PACKAGE_RELEASE_FEATURES)]...$(SGR0)"
+	@$(call cargo_run,build, --features $(PACKAGE_RELEASE_FEATURES) --release --target $(RELEASE_TARGET))
 
 rust-publish: rust-build
 	@echo "$(CYAN)Running cargo publish --package $(PUBLISH_PACKAGE_NAME)...$(SGR0)"
@@ -91,12 +105,18 @@ rust-check: check-cargo-registry rust-docker-pull
 	@echo "$(CYAN)Running cargo check...$(SGR0)"
 	@$(call cargo_run,check)
 
-rust-test: check-cargo-registry rust-docker-pull
-	@echo "$(CYAN)Running cargo test...$(SGR0)"
-	@$(call cargo_run,test,--all)
+rust-test-features: $(EXCLUSIVE_FEATURES_TEST)
+$(EXCLUSIVE_FEATURES_TEST):
+	@echo "$(CYAN)Running cargo test for feature $@...$(SGR0)"
+	@$(call cargo_run,test,--features $@ --workspace)
+rust-test: check-cargo-registry rust-docker-pull rust-test-features
+	@echo "$(CYAN)Running cargo test with features [$(PACKAGE_UT_FEATURES)]...$(SGR0)"
+	@$(call cargo_run,test,--features $(PACKAGE_UT_FEATURES) --workspace)
 
 rust-example-%: EXAMPLE_TARGET=$*
-rust-example-%: check-cargo-registry check-logs-dir rust-docker-pull
+rust-example-%: DOCKER_IMAGE_TAG=dev
+rust-example-%: check-cargo-registry check-logs-dir rust-docker-pull docker-build-dev
+	@echo "$(YELLOW) Make sure the $(DOCKER_IMAGE_NAME):dev image is available by runnning 'make docker-build-dev' first.$(SGR0)"
 	@docker compose run \
 		--user `id -u`:`id -g` \
 		--rm \
@@ -105,12 +125,12 @@ rust-example-%: check-cargo-registry check-logs-dir rust-docker-pull
 		-e EXAMPLE_TARGET=$(EXAMPLE_TARGET) \
 		-e SERVER_PORT_GRPC=$(DOCKER_PORT_GRPC) \
 		-e SERVER_PORT_REST=$(DOCKER_PORT_REST) \
-		-e SERVER_HOSTNAME=$(DOCKER_NAME)-example-server \
-		example && docker compose down
+		-e SERVER_HOSTNAME=$(DOCKER_NAME)-web-server \
+		example ; docker compose down
 
 rust-clippy: check-cargo-registry rust-docker-pull
 	@echo "$(CYAN)Running clippy...$(SGR0)"
-	@$(call cargo_run,clippy,--all -- -D warnings)
+	@$(call cargo_run,clippy,--workspace -- -D warnings)
 
 rust-fmt: check-cargo-registry rust-docker-pull
 	@echo "$(CYAN)Running and checking Rust codes formats...$(SGR0)"
@@ -147,15 +167,34 @@ rust-grpc-api:
 		pseudomuto/protoc-gen-doc \
 		--doc_opt=json,$(PACKAGE_NAME)-grpc-api.json
 
-rust-coverage: ADDITIONAL_OPT = --security-opt seccomp='unconfined'
-rust-coverage: check-cargo-registry rust-docker-pull
-	@echo "$(CYAN)Rebuilding and testing with profiling enabled...$(SGR0)"
-	@mkdir -p coverage/
-	@$(call cargo_run,tarpaulin,\
-		--workspace -l --include-tests --tests --no-fail-fast \
-		--all-features --skip-clean -t 600 --out Lcov \
-		--output-dir coverage/)
+rust-it-coverage: DOCKER_IMAGE_TAG=dev
+rust-it-coverage: check-cargo-registry check-logs-dir rust-docker-pull latest-docker-pull
+	@docker compose run \
+		--rm \
+		--user `id -u`:`id -g` \
+		-e SERVER_PORT_GRPC=$(DOCKER_PORT_GRPC) \
+		-e SERVER_PORT_REST=$(DOCKER_PORT_REST) \
+		-e SERVER_HOSTNAME=$(DOCKER_NAME)-web-server \
+		it-coverage ; docker compose down
 	@sed -e "s/\/usr\/src\/app\///g" -i coverage/lcov.info
+
+rust-ut-coverage: DOCKER_IMAGE_TAG=latest
+rust-ut-coverage: check-cargo-registry rust-docker-pull
+	@docker compose run \
+		--rm \
+		--user `id -u`:`id -g` \
+		-e SERVER_PORT_GRPC=$(DOCKER_PORT_GRPC) \
+		-e SERVER_PORT_REST=$(DOCKER_PORT_REST) \
+		-e SERVER_HOSTNAME=$(DOCKER_NAME)-web-server \
+		ut-coverage ; docker compose down
+	@sed -e "s/\/usr\/src\/app\///g" -i coverage/lcov.info
+
+release-checklist: docker-pull
+	@echo "$(CYAN)Running release checklist...$(SGR0)"
+	@$(call docker_run,python3 /usr/bin/release_checklist.py $(CHECKLIST_OPTS))
+
+release-checklist-full: docker-pull
+	$(MAKE) CHECKLIST_OPTS="-t -c" release-checklist
 
 rust-test-all: rust-build rust-check rust-test rust-clippy rust-fmt rust-doc
 rust-all: rust-clean rust-test-all rust-release
