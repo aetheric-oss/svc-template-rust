@@ -1,22 +1,22 @@
-# Software Design Document (SDD) - `svc-FIXME` 
+![Arrow Banner](https://github.com/Arrow-air/tf-github/raw/main/src/templates/doc-banner-services.png)
 
-<center>
+# Software Design Document (SDD) - `svc-FIXME`
 
-<img src="https://github.com/Arrow-air/tf-github/raw/main/src/templates/doc-banner-services.png" style="height:250px" />
-
-</center>
-
-## Overview
+## :telescope: Overview
 
 This document details the software implementation of FIXME.
 
 This service is responsible for FIXME
 
-Attribute | Description
---- | ---
-Status | Draft
+### Metadata
 
-## Related Documents
+| Attribute     | Description                                                       |
+| ------------- |-------------------------------------------------------------------|
+| Maintainer(s) | [Services Team](https://github.com/orgs/Arrow-air/teams/services) |
+| Stuckee       |  |
+| Status        | Draft                                                             |
+
+## :books: Related Documents
 
 Document | Description
 --- | ---
@@ -26,41 +26,46 @@ Document | Description
 [Concept of Operations - `svc-FIXME`](./conops.md) | Defines the motivation and duties of this microservice.
 [Interface Control Document (ICD) - `svc-FIXME`](./icd.md) | Defines the inputs and outputs of this microservice.
 
-## Module Attributes
+## :dna: Module Attributes
 
-Attribute | Applies | Explanation
---- | --- | ---
-Safety Critical | ? | 
-Realtime | ? |
+| Attribute       | Applies | Explanation                                                             |
+| --------------- | ------- | ----------------------------------------------------------------------- |
+| Safety Critical | Yes/No  | |
+| Realtime        | Yes/No  | |
 
-## Global Variables
+## :globe_with_meridians: Global Variables
 
 **Statically Allocated Queues**
 
 FIXME
 
-## Logic
+## :gear: Logic
 
 ### Initialization
 
 FIXME Description of activities at init
 
-### Loop
+### Control Loop
 
 FIXME Description of activities during loop
+As a GRPC server, this service awaits requests and executes handlers.
+
+All handlers **require** the following environment variables to be set:
+- FIXME
+
+For detailed sequence diagrams regarding request handlers, see [REST
+Handlers](#mailbox-rest-handlers).
+For detailed sequence diagrams regarding request handlers, see [gRPC
+Handlers](#speech_balloon-grpc-handlers).
 
 ### Cleanup
 
 FIXME Description of activities at cleanup
 
-## Interface Handlers
+## :mailbox: REST Handlers
 
-FIXME - What internal activities are triggered by messages at this module's interfaces?
+FIXME flowcharts for rest handlers
 
-## Tests
+## :speech_balloon: gRPC Handlers
 
-FIXME
-
-### Unit Tests
-
-FIXME
+FIXME flowcharts for gRPC handlers

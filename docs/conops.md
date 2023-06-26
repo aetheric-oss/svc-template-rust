@@ -1,23 +1,23 @@
+![Arrow Banner](https://github.com/Arrow-air/tf-github/raw/main/src/templates/doc-banner-services.png)
+
 # Concept of Operations - `svc-FIXME`
 
-<center>
+FIXME: Some of the headings below may not apply to your microservice. Remove if
+so.
 
-<img src="https://github.com/Arrow-air/tf-github/raw/main/src/templates/doc-banner-services.png" style="height:250px" />
-
-</center>
-
-Attribute | Description
---- | ---
-Maintainer | [@Arrow-air/services](https://github.com/orgs/Arrow-air/teams)
-Status | Draft
-  
-FIXME: Some of the headings below may not apply to your microservice. Remove if so.
-
-## Overview
+## :telescope: Overview
 
 FIXME - What does this microservice do, in brief?
 
-## Related Documents
+### Metadata
+
+| Attribute     | Description                                                       |
+| ------------- |-------------------------------------------------------------------|
+| Maintainer(s) | [Services Team](https://github.com/orgs/Arrow-air/teams/services) |
+| Stuckee       |  |
+| Status        | Draft     
+
+## :books: Related Documents
 
 Document | Description
 --- | ---
@@ -27,7 +27,7 @@ Document | Description
 [Interface Control Document (ICD) - `svc-FIXME`](./icd.md) | Defines the inputs and outputs of this microservice.
 [Software Design Document (SDD) - `svc-FIXME`](./sdd.md) | Specifies the internal activity of this microservice.
 
-## Motivation
+## :raised_hands: Motivation
 
 FIXME - Why is it needed?
 

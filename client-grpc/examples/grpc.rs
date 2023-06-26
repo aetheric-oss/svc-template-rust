@@ -1,42 +1,24 @@
 //! gRPC client implementation
 
-use std::env;
-#[allow(unused_qualifications, missing_docs)]
-use svc_template_rust_client_grpc::client::{rpc_service_client::RpcServiceClient, ReadyRequest};
+use lib_common::grpc::get_endpoint_from_env;
+use svc_template_rust_client_grpc::client::{ReadyRequest, RpcServiceClient};
+use svc_template_rust_client_grpc::service::Client as ServiceClient;
+use svc_template_rust_client_grpc::{Client, GrpcClient};
+use tonic::transport::Channel;
 
-/// Provide endpoint url to use
-pub fn get_grpc_endpoint() -> String {
-    //parse socket address from env variable or take default value
-    let address = match env::var("SERVER_HOSTNAME") {
-        Ok(val) => val,
-        Err(_) => "localhost".to_string(), // default value
-    };
-
-    let port = match env::var("SERVER_PORT_GRPC") {
-        Ok(val) => val,
-        Err(_) => "50051".to_string(), // default value
-    };
-
-    format!("http://{}:{}", address, port)
-}
-
-/// Example svc-template-client-grpc
+/// Example svc-template-rust-client-grpc
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let grpc_endpoint = get_grpc_endpoint();
-
+    let (host, port) = get_endpoint_from_env("SERVER_HOSTNAME", "SERVER_PORT_GRPC");
+    let connection =
+        GrpcClient::<RpcServiceClient<Channel>>::new_client(&host, port, "template_rust");
+    println!("Connection created");
     println!(
         "NOTE: Ensure the server is running on {} or this example will fail.",
-        grpc_endpoint
+        connection.get_address()
     );
 
-    let mut client = RpcServiceClient::connect(grpc_endpoint).await?;
-
-    println!("Client created");
-
-    let response = client
-        .is_ready(tonic::Request::new(ReadyRequest {}))
-        .await?;
+    let response = connection.is_ready(ReadyRequest {}).await?;
 
     println!("RESPONSE={:?}", response.into_inner());
 

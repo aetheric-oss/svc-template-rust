@@ -1,21 +1,21 @@
 //! Rest API implementations
-
-use crate::grpc::client::{ClientConnect, GrpcClients};
-use axum::{extract::Extension, Json};
-use hyper::StatusCode;
-
 /// openapi generated rest types
 pub mod rest_types {
     include!("../../../openapi/types.rs");
 }
 
+pub use rest_types::*;
+
+use axum::{extract::Extension, Json};
+use hyper::StatusCode;
+use svc_storage_client_grpc::*;
+
+use crate::grpc::client::GrpcClients;
+
 // gRPC client types
 // use svc_scheduler_client_grpc::grpc::{
 //     ConfirmItineraryRequest, Id, Itinerary as SchedulerItinerary, QueryFlightPlan,
 // };
-
-// REST types the caller will use
-pub use rest_types::ExampleRequest;
 
 /// Provides a way to tell a caller if the service is healthy.
 /// Checks dependencies, making sure all connections can be made.
@@ -35,19 +35,14 @@ pub async fn health_check(
 
     let mut ok = true;
 
-    // FIXME - uncomment this when you have a dependency, add dependencies when needed.
+    // FIXME - update/ uncomment this with the right dependencies.
     // This health check is to verify that ALL dependencies of this
     // microservice are running.
-    if grpc_clients.template_rust.get_client().await.is_err() {
-        let error_msg = "svc-template-rust unavailable.".to_string();
-        rest_error!("(health_check) {}.", &error_msg);
+    if grpc_clients.storage.adsb.get_client().await.is_err() {
+        let error_msg = "svc-storage adsb unavailable.".to_string();
+        rest_error!("(health_check) {}", &error_msg);
         ok = false;
     }
-    // if grpc_clients.storage.get_adsb_client().await.is_err() {
-    //    let error_msg = "svc-storage adsb unavailable.".to_string();
-    //    rest_error!("(health_check) {}.", &error_msg);
-    //    ok = false;
-    // }
 
     // if grpc_clients.pricing.get_client().await.is_err() {
     //     let error_msg = "svc-pricing unavailable.".to_string();
@@ -133,12 +128,15 @@ pub async fn example(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::Config;
+    use crate::{init_logger, Config};
 
     #[tokio::test]
     async fn test_health_check_success() {
+        let config = Config::try_from_env().unwrap_or_default();
+        init_logger(&config);
+        unit_test_info!("Testing health_check service.");
+
         // Mock the GrpcClients extension
-        let config = Config::default();
         let grpc_clients = GrpcClients::default(config); // Replace with your own mock implementation
 
         // Call the health_check function
@@ -147,5 +145,6 @@ mod tests {
         // Assert the expected result
         println!("{:?}", result);
         assert!(result.is_ok());
+        unit_test_info!("Test success.");
     }
 }
