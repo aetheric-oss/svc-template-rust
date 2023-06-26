@@ -1,36 +1,38 @@
 //! gRPC client helpers implementation
-
-pub use lib_common::grpc::ClientConnect;
-use lib_common::grpc::{Client, GrpcClient};
-use tonic::transport::Channel;
+use tokio::sync::OnceCell;
 
 // FIXME: import other microservices' GRPC clients instead, this is just an example.
-use svc_template_rust_client_grpc::client::TemplateRustClient;
-//use svc_storage_client_grpc::get_clients as get_storage_clients;
-//use svc_storage_client_grpc::Clients;
+use svc_storage_client_grpc::Clients;
+
+pub(crate) static CLIENTS: OnceCell<GrpcClients> = OnceCell::const_new();
+
+/// Returns CLIENTS, a GrpcClients object with default values.
+/// Uses host and port configurations using a Config object generated from
+/// environment variables.
+/// Initializes CLIENTS if it hasn't been initialized yet.
+pub async fn get_clients() -> &'static GrpcClients {
+    CLIENTS
+        .get_or_init(|| async move {
+            let config = crate::Config::try_from_env().unwrap_or_default();
+            GrpcClients::default(config)
+        })
+        .await
+}
 
 /// Struct to hold all gRPC client connections
 #[derive(Clone, Debug)]
 pub struct GrpcClients {
     /// FIXME: add the correct clients here
-    pub template_rust: GrpcClient<TemplateRustClient<Channel>>,
-    //pub storage: Clients,
+    pub storage: Clients,
 }
 
 impl GrpcClients {
-    /// Create new GrpcClient with defaults
-    pub fn default(config: crate::config::Config) -> Self {
-        let template_rust = GrpcClient::<TemplateRustClient<Channel>>::new_client(
-            &config.template_rust_host_grpc,
-            config.template_rust_port_grpc,
-            "template_rust",
-        );
-
-        //let storage_clients = get_storage_clients(config.storage_host_grpc, config.storage_port_grpc);
+    /// Create new GrpcClients with defaults
+    pub fn default(config: crate::Config) -> Self {
+        let storage_clients = Clients::new(config.storage_host_grpc, config.storage_port_grpc);
 
         GrpcClients {
-            template_rust,
-            //storage: storage_clients,
+            storage: storage_clients,
         }
     }
 }
@@ -38,11 +40,20 @@ impl GrpcClients {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::{init_logger, Config};
+
+    use svc_storage_client_grpc::Client;
 
     #[tokio::test]
-    async fn test_grpc_client_default() {
-        let config = crate::config::Config::default();
+    async fn test_grpc_clients_default() {
+        init_logger(&Config::try_from_env().unwrap_or_default());
+        unit_test_info!("Testing GrpcClients default function.");
+
+        let config = crate::Config::default();
         let clients = GrpcClients::default(config);
-        assert_eq!(clients.template_rust.get_name(), "template_rust")
+        let adsb = clients.storage.adsb;
+        println!("{:?}", adsb);
+        assert_eq!(adsb.get_name(), "adsb");
+        unit_test_info!("Test success.");
     }
 }

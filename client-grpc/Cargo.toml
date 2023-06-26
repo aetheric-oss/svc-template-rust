@@ -1,20 +1,32 @@
 [package]
-description = "Arrow template service gRPC client"
+description = "Arrow template-rust service gRPC client"
+keywords    = ["vtol", "client", "grpc", "template-rust"] # max 5
 name        = "svc-template-rust-client-grpc"
 version     = "0.2.0-develop.6"
 
+authors.workspace      = true
 categories.workspace   = true
 edition.workspace      = true
 homepage.workspace     = true
-keywords.workspace     = true
 license-file.workspace = true
 repository.workspace   = true
 
 [features]
-# Will implement mock functions for the client, only use for tests!
-mock_client = ["tower", "tokio", "lib-common/grpc_mock", "svc-template-rust"]
+dev       = ["mock", "tokio"]
+test_util = ["mock", "stub_backends", "tokio"]
+# Will add a 'mock' module for the enabled resources, providing access to mock data generation functions
+mock = []
+# Will use a stubbed server connection, only use for tests!
+stub_backends = [
+  "svc-template-rust/stub_server",
+  "lib-common/grpc_mock",
+  "tower",
+]
+# Will implement stub functions for the client, only use for tests!
+stub_client = ["svc-template-rust"]
 
 [dependencies]
+cfg-if            = "1.0"
 log               = { version = "0.4" }
 prost             = "0.11"
 prost-types       = "0.11"
@@ -35,9 +47,9 @@ version  = "1.28"
 [dev-dependencies]
 logtest = "2.0"
 
-# Make sure we enable the 'mock_client' features when running tests
+# Make sure we enable the required modules for testing
 [dev-dependencies.svc-template-rust-client-grpc]
-features = ["mock_client"]
+features = ["dev"]
 path     = "."
 
 [[example]]
