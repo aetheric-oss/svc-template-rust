@@ -29,3 +29,5 @@ openapi
 dotenv
 NocoDB
 logtest
+oneshot
+Stuckee

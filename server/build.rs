@@ -3,7 +3,7 @@
 ///generates .rs files in src directory
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let proto_dir = "../proto";
-    let proto_file = &format!("{}/svc-template-rust-grpc.proto", proto_dir);
+    let proto_file = &format!("{}/grpc.proto", proto_dir);
 
     let server_config = tonic_build::configure()
         .type_attribute("ReadyRequest", "#[derive(Eq, Copy)]")

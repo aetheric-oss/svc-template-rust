@@ -1,4 +1,4 @@
-//! Imports the types used in REST communication with the server
+#![doc = include_str!("../README.md")]
 
 /// Types for messages to the server
 pub mod types {

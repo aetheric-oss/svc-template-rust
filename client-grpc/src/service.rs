@@ -11,9 +11,34 @@ where
     /// The type expected for ReadyResponse structs.
     type ReadyResponse;
 
-    /// Wrapper for is_ready function.
+    /// Returns a [`tonic::Response`] containing a [`ReadyResponse`](Self::ReadyResponse)
+    /// Takes an [`ReadyRequest`](Self::ReadyRequest).
+    ///
+    /// # Errors
+    ///
+    /// Returns [`tonic::Status`] with [`Code::Unknown`](tonic::Code::Unknown) if
+    /// the server is not ready.
+    ///
+    /// # Examples
+    /// ```
+    /// use lib_common::grpc::get_endpoint_from_env;
+    /// use svc_template_rust_client_grpc::client::{ReadyRequest, RpcServiceClient};
+    /// use svc_template_rust_client_grpc::{Client, GrpcClient};
+    /// use svc_template_rust_client_grpc::service::Client as ServiceClient;
+    /// use tonic::transport::Channel;
+    ///
+    /// async fn example () -> Result<(), Box<dyn std::error::Error>> {
+    ///     let (host, port) = get_endpoint_from_env("SERVER_HOSTNAME", "SERVER_PORT_GRPC");
+    ///     let connection = GrpcClient::<RpcServiceClient<Channel>>::new_client(&host, port, "template_rust");
+    ///     let response = connection
+    ///         .is_ready(ReadyRequest {})
+    ///         .await?;
+    ///     println!("RESPONSE={:?}", response.into_inner());
+    ///     Ok(())
+    /// }
+    /// ```
     async fn is_ready(
         &self,
-        request: tonic::Request<Self::ReadyRequest>,
+        request: Self::ReadyRequest,
     ) -> Result<tonic::Response<Self::ReadyResponse>, tonic::Status>;
 }
