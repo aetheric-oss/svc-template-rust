@@ -2,9 +2,9 @@
 members = ["server", "client-grpc", "client-rest"]
 
 [workspace.package]
+authors      = ["arrow-services <group-services@arrowair.com>"]
 edition      = "2021"
 homepage     = "https://www.arrowair.com/docs/documentation/services/intro"
-keywords     = ["vtol", "server", "template"]                               # max 5
 license-file = "LICENSE"
 repository   = "https://github.com/Arrow-air/svc-template-rust"
 

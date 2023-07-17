@@ -106,7 +106,6 @@ There are additional make targets available. You can find all possible targets b
 
 ## :scroll: Documentation
 The following documents are relevant to this service:
-- :construction: Requirements & User Stories
 - [Concept of Operations](./docs/conops.md)
 - [Software Design Document](./docs/sdd.md)
 - [Interface Control Document (ICD)](./docs/icd.md)
@@ -120,7 +119,7 @@ Learn more about us:
 
 ## LICENSE Notice
 
-Please note that svc-template is under BUSL license until the Change Date, currently the earlier of two years from the release date. Exceptions to the license may be specified by Arrow Governance via Additional Use Grants, which can, for example, allow svc-template to be deployed for certain production uses. Please reach out to Arrow DAO to request a DAO vote for exceptions to the license, or to move up the Change Date.
+Please note that svc-template-rust is under BUSL license until the Change Date, currently the earlier of two years from the release date. Exceptions to the license may be specified by Arrow Governance via Additional Use Grants, which can, for example, allow svc-template-rust to be deployed for certain production uses. Please reach out to Arrow DAO to request a DAO vote for exceptions to the license, or to move up the Change Date.
 
 ## :exclamation: Treatment of `Cargo.lock`
 If you are building a non-end product like a library, include `Cargo.lock` in `.gitignore`.

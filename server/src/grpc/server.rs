@@ -1,15 +1,15 @@
 //! gRPC server implementation
 
-///module generated from proto/svc-template-rust-grpc.proto
-pub mod grpc_server {
+/// module generated from proto/svc-template-rust-grpc.proto
+mod grpc_server {
     #![allow(unused_qualifications, missing_docs)]
     tonic::include_proto!("grpc");
 }
 pub use grpc_server::rpc_service_server::{RpcService, RpcServiceServer};
 pub use grpc_server::{ReadyRequest, ReadyResponse};
 
-use crate::config::Config;
 use crate::shutdown_signal;
+use crate::Config;
 
 use std::fmt::Debug;
 use std::net::SocketAddr;
@@ -18,17 +18,17 @@ use tonic::{Request, Response, Status};
 
 /// struct to implement the gRPC server functions
 #[derive(Debug, Default, Copy, Clone)]
-pub struct GrpcServerImpl {}
+pub struct ServerImpl {}
 
+#[cfg(not(feature = "stub_server"))]
 #[tonic::async_trait]
-#[cfg(not(any(feature = "mock_server", test)))]
-impl RpcService for GrpcServerImpl {
+impl RpcService for ServerImpl {
     /// Returns ready:true when service is available
     async fn is_ready(
         &self,
         request: Request<ReadyRequest>,
     ) -> Result<Response<ReadyResponse>, Status> {
-        grpc_info!("(is_ready) template_rust.");
+        grpc_info!("(is_ready) template_rust server.");
         grpc_debug!("(is_ready) request: {:?}", request);
         let response = ReadyResponse { ready: true };
         Ok(Response::new(response))
@@ -37,17 +37,17 @@ impl RpcService for GrpcServerImpl {
 
 /// Starts the grpc servers for this microservice using the provided configuration
 ///
-/// # Example:
+/// # Examples
 /// ```
 /// use svc_template_rust::grpc::server::grpc_server;
-/// use svc_template_rust::config::Config;
+/// use svc_template_rust::Config;
 /// async fn example() -> Result<(), tokio::task::JoinError> {
 ///     let config = Config::default();
-///     tokio::spawn(grpc_server(config)).await
+///     tokio::spawn(grpc_server(config, None)).await
 /// }
 /// ```
 #[cfg(not(tarpaulin_include))]
-pub async fn grpc_server(config: Config) {
+pub async fn grpc_server(config: Config, shutdown_rx: Option<tokio::sync::oneshot::Receiver<()>>) {
     grpc_debug!("(grpc_server) entry.");
 
     // Grpc Server
@@ -55,41 +55,44 @@ pub async fn grpc_server(config: Config) {
     let full_grpc_addr: SocketAddr = match format!("[::]:{}", grpc_port).parse() {
         Ok(addr) => addr,
         Err(e) => {
-            grpc_error!("Failed to parse gRPC address: {}", e);
+            grpc_error!("(grpc_server) Failed to parse gRPC address: {}", e);
             return;
         }
     };
 
-    let imp = GrpcServerImpl::default();
+    let imp = ServerImpl::default();
     let (mut health_reporter, health_service) = tonic_health::server::health_reporter();
     health_reporter
-        .set_serving::<RpcServiceServer<GrpcServerImpl>>()
+        .set_serving::<RpcServiceServer<ServerImpl>>()
         .await;
 
     //start server
-    grpc_info!("Starting gRPC services on: {}.", full_grpc_addr);
+    grpc_info!(
+        "(grpc_server) Starting gRPC services on: {}.",
+        full_grpc_addr
+    );
     match Server::builder()
         .add_service(health_service)
         .add_service(RpcServiceServer::new(imp))
-        .serve_with_shutdown(full_grpc_addr, shutdown_signal("grpc"))
+        .serve_with_shutdown(full_grpc_addr, shutdown_signal("grpc", shutdown_rx))
         .await
     {
-        Ok(_) => grpc_info!("gRPC server running at: {}.", full_grpc_addr),
+        Ok(_) => grpc_info!("(grpc_server) gRPC server running at: {}.", full_grpc_addr),
         Err(e) => {
-            grpc_error!("could not start gRPC server: {}", e);
+            grpc_error!("(grpc_server) Could not start gRPC server: {}", e);
         }
     };
 }
 
+#[cfg(feature = "stub_server")]
 #[tonic::async_trait]
-#[cfg(any(feature = "mock_server", test))]
-impl RpcService for GrpcServerImpl {
+impl RpcService for ServerImpl {
     async fn is_ready(
         &self,
         request: Request<ReadyRequest>,
     ) -> Result<Response<ReadyResponse>, Status> {
-        grpc_warn!("(is_ready) template_rust server MOCK.");
-        grpc_debug!("(is_ready) request: {:?}", request);
+        grpc_warn!("(is_ready MOCK) template_rust server.");
+        grpc_debug!("(is_ready MOCK) request: {:?}", request);
         let response = ReadyResponse { ready: true };
         Ok(Response::new(response))
     }
@@ -98,13 +101,18 @@ impl RpcService for GrpcServerImpl {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::{init_logger, Config};
 
     #[tokio::test]
     async fn test_grpc_server_is_ready() {
-        let imp = GrpcServerImpl::default();
+        init_logger(&Config::try_from_env().unwrap_or_default());
+        unit_test_info!("Testing is_ready service.");
+
+        let imp = ServerImpl::default();
         let result = imp.is_ready(Request::new(ReadyRequest {})).await;
         assert!(result.is_ok());
         let result: ReadyResponse = result.unwrap().into_inner();
         assert_eq!(result.ready, true);
+        unit_test_info!("Test success.");
     }
 }

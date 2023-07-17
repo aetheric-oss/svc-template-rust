@@ -3,24 +3,8 @@
 use chrono::Utc;
 use hyper::{Body, Client, Method, Request, Response};
 use hyper::{Error, StatusCode};
-use std::env;
+use lib_common::grpc::get_endpoint_from_env;
 use svc_template_rust_client_rest::types::*;
-
-/// Provide endpoint url to use
-pub fn get_rest_endpoint() -> String {
-    //parse socket address from env variable or take default value
-    let address = match env::var("SERVER_HOSTNAME") {
-        Ok(val) => val,
-        Err(_) => "localhost".to_string(), // default value
-    };
-
-    let port = match env::var("SERVER_PORT_REST") {
-        Ok(val) => val,
-        Err(_) => "8080".to_string(), // default value
-    };
-
-    format!("http://{}:{}", address, port)
-}
 
 fn evaluate(resp: Result<Response<Body>, Error>, expected_code: StatusCode) -> (bool, String) {
     let mut ok = true;
@@ -44,7 +28,11 @@ fn evaluate(resp: Result<Response<Body>, Error>, expected_code: StatusCode) -> (
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("NOTE: Ensure the server is running, or this example will fail.");
-    let rest_endpoint = get_rest_endpoint();
+
+    let (host, port) = get_endpoint_from_env("SERVER_HOSTNAME", "SERVER_PORT_REST");
+    let url = format!("http://{host}:{port}");
+
+    println!("Rest endpoint set to [{url}].");
 
     let mut ok = true;
     let client = Client::builder()
@@ -59,7 +47,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
 
         let data_str = serde_json::to_string(&data).unwrap();
-        let uri = format!("{}/template/example", rest_endpoint);
+        let uri = format!("{}/template/example", url);
         let req = Request::builder()
             .method(Method::POST)
             .uri(uri.clone())
