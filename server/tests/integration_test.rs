@@ -2,7 +2,7 @@
 use lib_common::log_macros;
 use svc_template_rust::*;
 
-log_macros!("it", "test::integration");
+log_macros!("it", "test");
 
 fn get_log_string(function: &str, name: &str) -> String {
     #[cfg(feature = "stub_server")]

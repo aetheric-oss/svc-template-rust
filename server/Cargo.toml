@@ -30,15 +30,18 @@ stub_server = ["test_util"]
 stub_client = ["stub_backends"]
 
 [dependencies]
-anyhow       = "1.0"
-axum         = "0.6"
-cargo-husky  = "1"
-chrono       = { version = "0.4", features = ["serde"] }
-clap         = { version = "4.0", features = ["derive"] }
+anyhow      = "1.0"
+axum        = "0.6"
+cargo-husky = "1"
+chrono      = { version = "0.4", features = ["serde"] }
+# pin clap to 4.3 for now, since 4.4 requires rustc 1.70.0 or newer.
+clap = { version = "=4.3.24", features = ["derive"] }
+# pin clap_lex to 0.5.0 for now, since 0.5.1 requires rustc 1.70.0 or newer.
+clap_lex     = "=0.5.0"
 config       = "0.13"
 dotenv       = "0.15"
 hyper        = "0.14"
-lib-common   = { git = "https://github.com/Arrow-air/lib-common.git", tag = "v0.1.1-develop.2" }
+lib-common   = { git = "https://github.com/Arrow-air/lib-common.git", tag = "v0.2.0" }
 log          = "0.4"
 openssl      = "0.10"
 prost        = "0.11"
@@ -62,7 +65,7 @@ tag = "v0.2.0-develop.4"
 [dependencies.svc-storage-client-grpc]
 features = ["adsb"]
 git      = "https://github.com/Arrow-air/svc-storage"
-tag      = "v0.10.1-develop.18"
+tag      = "v0.11.0"
 # ========================================================
 
 [dependencies.log4rs]

@@ -40,20 +40,19 @@ impl GrpcClients {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{init_logger, Config};
-
-    use svc_storage_client_grpc::Client;
+    use lib_common::grpc::Client;
 
     #[tokio::test]
     async fn test_grpc_clients_default() {
-        init_logger(&Config::try_from_env().unwrap_or_default());
-        unit_test_info!("Testing GrpcClients default function.");
+        crate::get_log_handle().await;
+        ut_info!("(test_grpc_clients_default) Start.");
 
         let config = crate::Config::default();
         let clients = GrpcClients::default(config);
         let adsb = clients.storage.adsb;
-        println!("{:?}", adsb);
+        ut_debug!("(test_grpc_clients_default) adsb: {:?}", adsb);
         assert_eq!(adsb.get_name(), "adsb");
-        unit_test_info!("Test success.");
+
+        ut_info!("(test_grpc_clients_default) Success.");
     }
 }
