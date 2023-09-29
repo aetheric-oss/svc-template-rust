@@ -39,8 +39,13 @@ pub fn generate_openapi_spec(target: &str) -> Result<(), Box<dyn std::error::Err
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_openapi_spec_generation() {
+    #[tokio::test]
+    async fn test_openapi_spec_generation() {
+        crate::get_log_handle().await;
+        ut_info!("(test_openapi_spec_generation) Start.");
+
         assert!(generate_openapi_spec("/tmp/generate_openapi_spec.out").is_ok());
+
+        ut_info!("(test_openapi_spec_generation) Success.");
     }
 }

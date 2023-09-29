@@ -6,16 +6,15 @@ pub mod rest_types {
 
 pub use rest_types::*;
 
+use crate::grpc::client::GrpcClients;
 use axum::{extract::Extension, Json};
 use hyper::StatusCode;
-use svc_storage_client_grpc::*;
-
-use crate::grpc::client::GrpcClients;
+use lib_common::grpc::ClientConnect;
 
 // gRPC client types
-// use svc_scheduler_client_grpc::grpc::{
-//     ConfirmItineraryRequest, Id, Itinerary as SchedulerItinerary, QueryFlightPlan,
-// };
+// use svc_storage_client_grpc::prelude::*;
+// use svc_scheduler_client_grpc::prelude::*;
+// ...
 
 /// Provides a way to tell a caller if the service is healthy.
 /// Checks dependencies, making sure all connections can be made.
@@ -128,15 +127,14 @@ pub async fn example(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{init_logger, Config};
 
     #[tokio::test]
     async fn test_health_check_success() {
-        let config = Config::try_from_env().unwrap_or_default();
-        init_logger(&config);
-        unit_test_info!("Testing health_check service.");
+        crate::get_log_handle().await;
+        ut_info!("(test_health_check_success) Start.");
 
         // Mock the GrpcClients extension
+        let config = crate::Config::try_from_env().unwrap_or_default();
         let grpc_clients = GrpcClients::default(config); // Replace with your own mock implementation
 
         // Call the health_check function
@@ -145,6 +143,7 @@ mod tests {
         // Assert the expected result
         println!("{:?}", result);
         assert!(result.is_ok());
-        unit_test_info!("Test success.");
+
+        ut_info!("(test_health_check_success) Success.");
     }
 }

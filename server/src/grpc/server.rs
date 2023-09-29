@@ -29,7 +29,7 @@ impl RpcService for ServerImpl {
         request: Request<ReadyRequest>,
     ) -> Result<Response<ReadyResponse>, Status> {
         grpc_info!("(is_ready) template_rust server.");
-        grpc_debug!("(is_ready) request: {:?}", request);
+        grpc_debug!("(is_ready) [{:?}].", request);
         let response = ReadyResponse { ready: true };
         Ok(Response::new(response))
     }
@@ -68,7 +68,7 @@ pub async fn grpc_server(config: Config, shutdown_rx: Option<tokio::sync::onesho
 
     //start server
     grpc_info!(
-        "(grpc_server) Starting gRPC services on: {}.",
+        "(grpc_server) Starting gRPC services on: {}",
         full_grpc_addr
     );
     match Server::builder()
@@ -77,7 +77,7 @@ pub async fn grpc_server(config: Config, shutdown_rx: Option<tokio::sync::onesho
         .serve_with_shutdown(full_grpc_addr, shutdown_signal("grpc", shutdown_rx))
         .await
     {
-        Ok(_) => grpc_info!("(grpc_server) gRPC server running at: {}.", full_grpc_addr),
+        Ok(_) => grpc_info!("(grpc_server) gRPC server running at: {}", full_grpc_addr),
         Err(e) => {
             grpc_error!("(grpc_server) Could not start gRPC server: {}", e);
         }
@@ -92,7 +92,7 @@ impl RpcService for ServerImpl {
         request: Request<ReadyRequest>,
     ) -> Result<Response<ReadyResponse>, Status> {
         grpc_warn!("(is_ready MOCK) template_rust server.");
-        grpc_debug!("(is_ready MOCK) request: {:?}", request);
+        grpc_debug!("(is_ready MOCK) [{:?}].", request);
         let response = ReadyResponse { ready: true };
         Ok(Response::new(response))
     }
@@ -101,18 +101,18 @@ impl RpcService for ServerImpl {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{init_logger, Config};
 
     #[tokio::test]
     async fn test_grpc_server_is_ready() {
-        init_logger(&Config::try_from_env().unwrap_or_default());
-        unit_test_info!("Testing is_ready service.");
+        crate::get_log_handle().await;
+        ut_info!("(test_grpc_server_is_ready) Start.");
 
         let imp = ServerImpl::default();
         let result = imp.is_ready(Request::new(ReadyRequest {})).await;
         assert!(result.is_ok());
         let result: ReadyResponse = result.unwrap().into_inner();
         assert_eq!(result.ready, true);
-        unit_test_info!("Test success.");
+
+        ut_info!("(test_grpc_server_is_ready) Success.");
     }
 }
