@@ -9,10 +9,9 @@ pub use rest_types::*;
 use crate::grpc::client::GrpcClients;
 use axum::{extract::Extension, Json};
 use hyper::StatusCode;
-use lib_common::grpc::ClientConnect;
 
+use svc_storage_client_grpc::prelude::*;
 // gRPC client types
-// use svc_storage_client_grpc::prelude::*;
 // use svc_scheduler_client_grpc::prelude::*;
 // ...
 
@@ -37,23 +36,17 @@ pub async fn health_check(
     // FIXME - update/ uncomment this with the right dependencies.
     // This health check is to verify that ALL dependencies of this
     // microservice are running.
-    if grpc_clients.storage.adsb.get_client().await.is_err() {
+    if grpc_clients
+        .storage
+        .adsb
+        .is_ready(ReadyRequest {})
+        .await
+        .is_err()
+    {
         let error_msg = "svc-storage adsb unavailable.".to_string();
-        rest_error!("(health_check) {}", &error_msg);
+        rest_error!("(health_check) {}.", &error_msg);
         ok = false;
     }
-
-    // if grpc_clients.pricing.get_client().await.is_err() {
-    //     let error_msg = "svc-pricing unavailable.".to_string();
-    //     rest_error!("(health_check) {}", &error_msg);
-    //     ok = false;
-    // }
-
-    // if grpc_clients.scheduler.get_client().await.is_err() {
-    //     let error_msg = "svc-scheduler unavailable.".to_string();
-    //     rest_error!("(health_check) {}", &error_msg);
-    //     ok = false;
-    // }
 
     match ok {
         true => {
