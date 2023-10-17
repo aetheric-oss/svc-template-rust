@@ -31,7 +31,7 @@ pub struct Config {
 
 impl Default for Config {
     fn default() -> Self {
-        log::warn!("Creating Config object with default values.");
+        log::warn!("(default) Creating Config object with default values.");
         Self::new()
     }
 }

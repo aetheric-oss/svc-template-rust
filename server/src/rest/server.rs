@@ -54,10 +54,10 @@ pub async fn rest_server(
     let limit_middleware = ServiceBuilder::new()
         .layer(TraceLayer::new_for_http())
         .layer(HandleErrorLayer::new(|e: BoxError| async move {
-            rest_warn!("(server) too many requests: {}", e);
+            rest_warn!("(rest_server) too many requests: {}", e);
             (
                 StatusCode::TOO_MANY_REQUESTS,
-                "(server) too many requests.".to_string(),
+                "(rest_server) too many requests.".to_string(),
             )
         }))
         .layer(BufferLayer::new(100))
