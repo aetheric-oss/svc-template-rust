@@ -30,28 +30,23 @@ stub_server = ["test_util"]
 stub_client = ["stub_backends"]
 
 [dependencies]
-anyhow      = "1.0"
-axum        = "0.6"
-cargo-husky = "1"
-chrono      = { version = "0.4", features = ["serde"] }
-# pin clap to 4.3 for now, since 4.4 requires rustc 1.70.0 or newer.
-clap = { version = "=4.3.24", features = ["derive"] }
-# pin clap_lex to 0.5.0 for now, since 0.5.1 requires rustc 1.70.0 or newer.
-clap_lex     = "=0.5.0"
+anyhow       = "1.0"
+axum         = "0.5"
+cargo-husky  = "1"
+chrono       = { version = "0.4", features = ["serde"] }
+clap         = { version = "4.4", features = ["derive"] }
 config       = "0.13"
 dotenv       = "0.15"
 hyper        = "0.14"
-lib-common   = { git = "https://github.com/Arrow-air/lib-common.git", tag = "v0.2.0" }
 log          = "0.4"
 openssl      = "0.10"
-prost        = "0.11"
-prost-types  = "0.11"
+prost        = "0.12"
 serde        = "1.0"
 serde_json   = "1.0"
-tokio        = { version = "1.28", features = ["full"] }
+tokio        = { version = "1.33", features = ["full"] }
 tokio-util   = "0.7"
-tonic        = "0.8"
-tonic-health = "0.8"
+tonic        = "0.10"
+tonic-health = "0.10"
 tower        = { version = "0.4", features = ["limit"] }
 tower-http   = { version = "0.4", features = ["cors", "trace"] }
 
@@ -65,8 +60,12 @@ tag = "v0.2.0-develop.4"
 [dependencies.svc-storage-client-grpc]
 features = ["adsb"]
 git      = "https://github.com/Arrow-air/svc-storage"
-tag      = "v0.11.0"
+tag      = "latest-develop"
 # ========================================================
+
+[dependencies.lib-common]
+git = "https://github.com/Arrow-air/lib-common"
+tag = "latest-develop"
 
 [dependencies.log4rs]
 features = [
@@ -79,7 +78,7 @@ version = "1.2"
 
 [dependencies.utoipa]
 features = ["axum_extras", "chrono"]
-version  = "3.3"
+version  = "4.0"
 
 [dev-dependencies]
 logtest = "2.0"
@@ -95,4 +94,4 @@ features = ["dev"]
 path     = "."
 
 [build-dependencies]
-tonic-build = "0.8"
+tonic-build = "0.10"
