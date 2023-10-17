@@ -12,7 +12,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Try to load log configuration from the provided log file.
     // Will default to stdout debug logging if the file can not be loaded.
-    load_logger_config_from_file(config.log_config.as_str()).await?;
+    load_logger_config_from_file(config.log_config.as_str())
+        .await
+        .or_else(|e| Ok::<(), String>(log::error!("(main) {}", e)))?;
 
     info!("(main) Server startup.");
     // --------------------------------------------------

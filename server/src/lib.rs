@@ -141,7 +141,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_load_logger_config_from_file() {
-        crate::get_log_handle().await;
+        get_log_handle().await;
         ut_info!("(test_config_from_env) Start.");
 
         let result = load_logger_config_from_file("/usr/src/app/log4rs.yaml").await;

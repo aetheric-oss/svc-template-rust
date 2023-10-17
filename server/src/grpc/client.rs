@@ -2,7 +2,7 @@
 use tokio::sync::OnceCell;
 
 // FIXME: import other microservices' GRPC clients instead, this is just an example.
-use svc_storage_client_grpc::Clients;
+use svc_storage_client_grpc::prelude::Clients;
 
 pub(crate) static CLIENTS: OnceCell<GrpcClients> = OnceCell::const_new();
 
@@ -39,8 +39,9 @@ impl GrpcClients {
 
 #[cfg(test)]
 mod tests {
+    use svc_storage_client_grpc::prelude::Client;
+
     use super::*;
-    use lib_common::grpc::Client;
 
     #[tokio::test]
     async fn test_grpc_clients_default() {
@@ -49,6 +50,7 @@ mod tests {
 
         let config = crate::Config::default();
         let clients = GrpcClients::default(config);
+
         let adsb = clients.storage.adsb;
         ut_debug!("(test_grpc_clients_default) adsb: {:?}", adsb);
         assert_eq!(adsb.get_name(), "adsb");
