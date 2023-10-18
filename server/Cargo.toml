@@ -2,7 +2,7 @@
 description = "Arrow template service gRPC server"
 keywords    = ["vtol", "server", "grpc", "rest", "template-rust"] # max 5
 name        = "svc-template-rust"
-version     = "0.2.0-develop.6"
+version     = "0.2.0-develop.7"
 
 authors.workspace      = true
 categories.workspace   = true
