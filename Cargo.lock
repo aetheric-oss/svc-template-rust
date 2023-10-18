@@ -2156,7 +2156,7 @@ dependencies = [
 
 [[package]]
 name = "svc-template-rust"
-version = "0.2.0-develop.6"
+version = "0.2.0-develop.7"
 dependencies = [
  "anyhow",
  "axum",
@@ -2176,7 +2176,7 @@ dependencies = [
  "serde_json",
  "svc-storage-client-grpc",
  "svc-template-rust",
- "svc-template-rust-client-grpc 0.2.0-develop.7",
+ "svc-template-rust-client-grpc 0.2.0-develop.7 (git+https://github.com/Arrow-air/svc-template-rust.git?tag=latest-develop)",
  "tokio",
  "tokio-util",
  "tonic",
@@ -2189,7 +2189,7 @@ dependencies = [
 
 [[package]]
 name = "svc-template-rust-client-grpc"
-version = "0.2.0-develop.6"
+version = "0.2.0-develop.7"
 dependencies = [
  "cfg-if",
  "lib-common 0.2.1-develop.0 (git+https://github.com/Arrow-air/lib-common?tag=latest-develop)",
@@ -2197,7 +2197,7 @@ dependencies = [
  "logtest",
  "prost",
  "svc-template-rust",
- "svc-template-rust-client-grpc 0.2.0-develop.6",
+ "svc-template-rust-client-grpc 0.2.0-develop.7",
  "tokio",
  "tonic",
  "tower",
@@ -2217,7 +2217,7 @@ dependencies = [
 
 [[package]]
 name = "svc-template-rust-client-rest"
-version = "0.2.0-develop.6"
+version = "0.2.0-develop.7"
 dependencies = [
  "chrono",
  "hyper",
