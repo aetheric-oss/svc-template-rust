@@ -7,7 +7,7 @@ fn get_log_string(function: &str, name: &str) -> String {
     #[cfg(not(feature = "stub_client"))]
     cfg_if::cfg_if! {
         if #[cfg(feature = "stub_backends")] {
-            return format!("({} MOCK) {} server.", function, name);
+            return format!("({}) {} server.", function, name);
         } else {
             return format!("({}) {} client.", function, name);
         }
@@ -22,7 +22,7 @@ async fn test_client_requests_and_logs() {
 
     let name = "template_rust";
     let (server_host, server_port) =
-        lib_common::grpc::get_endpoint_from_env("GRPC_HOST", "GRPC_PORT");
+        lib_common::grpc::get_endpoint_from_env("SERVER_HOSTNAME", "SERVER_PORT_GRPC");
 
     let client = TemplateRustClient::new_client(&server_host, server_port, name);
 
