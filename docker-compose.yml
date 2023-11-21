@@ -1,0 +1,28 @@
+version: '3.8'
+
+configs:
+  log4rs:
+    file: log4rs.yaml
+  dot-env:
+    file: .env
+
+services:
+  web-server:
+    extends:
+      file: docker-compose-base.yml
+      service: web-server
+
+  example:
+    extends:
+      file: docker-compose-base.yml
+      service: example
+
+  ut-coverage:
+    extends:
+      file: docker-compose-base.yml
+      service: ut-coverage
+
+  it-coverage:
+    extends:
+      file: docker-compose-base.yml
+      service: it-coverage

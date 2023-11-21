@@ -65,7 +65,7 @@ mod tests {
     async fn test_client_connect() {
         let name = "template_rust";
         let (server_host, server_port) =
-            lib_common::grpc::get_endpoint_from_env("GRPC_HOST", "GRPC_PORT");
+            lib_common::grpc::get_endpoint_from_env("SERVER_HOSTNAME", "SERVER_PORT_GRPC");
 
         let client: TemplateRustClient = GrpcClient::new_client(&server_host, server_port, name);
         assert_eq!(client.get_name(), name);
@@ -79,7 +79,7 @@ mod tests {
     async fn test_client_is_ready_request() {
         let name = "template_rust";
         let (server_host, server_port) =
-            lib_common::grpc::get_endpoint_from_env("GRPC_HOST", "GRPC_PORT");
+            lib_common::grpc::get_endpoint_from_env("SERVER_HOSTNAME", "SERVER_PORT_GRPC");
 
         let client: TemplateRustClient = GrpcClient::new_client(&server_host, server_port, name);
         assert_eq!(client.get_name(), name);

@@ -127,7 +127,7 @@ mod tests {
         ut_info!("(test_health_check_success) Start.");
 
         // Mock the GrpcClients extension
-        let config = crate::Config::try_from_env().unwrap_or_default();
+        let config = crate::Config::default();
         let grpc_clients = GrpcClients::default(config); // Replace with your own mock implementation
 
         // Call the health_check function
