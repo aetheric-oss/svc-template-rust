@@ -32,3 +32,5 @@ logtest
 oneshot
 Stuckee
 Refactorings
+Lcov
+seccomp
