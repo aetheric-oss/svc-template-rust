@@ -5,6 +5,9 @@ appenders:
     encoder:
       # https://medium.com/nikmas-group-rust/advanced-logging-in-rust-with-log4rs-2d712bb322de
       pattern: "{d(%Y-%m-%d %H:%M:%S)} | {I} | {h({l}):5.5} | {f}:{L} | {m}{n}"
+    filters:
+      - kind: threshold
+        level: warn
   grpc_requests:
     kind: rolling_file
     path: "logs/grpc_requests.log"
@@ -19,6 +22,26 @@ appenders:
         base: 1
     encoder:
       kind: json
+    filters:
+      - kind: threshold
+        level: info
+  grpc_clients:
+    kind: rolling_file
+    path: "logs/grpc_clients.log"
+    policy:
+      trigger:
+        kind: size
+        limit: 20mb
+      roller:
+        kind: fixed_window
+        pattern: logs/grpc_clients_{}.gz
+        count: 5
+        base: 1
+    encoder:
+      kind: json
+    filters:
+      - kind: threshold
+        level: info
   rest_requests:
     kind: rolling_file
     path: "logs/rest_requests.log"
@@ -33,6 +56,9 @@ appenders:
         base: 1
     encoder:
       kind: json
+    filters:
+      - kind: threshold
+        level: info
   tests:
     kind: rolling_file
     path: "logs/tests.log"
@@ -47,26 +73,51 @@ appenders:
         base: 1
     encoder:
       kind: json
+    filters:
+      - kind: threshold
+        level: info
+  debug_file:
+    kind: rolling_file
+    path: "logs/debug.log"
+    policy:
+      trigger:
+        kind: size
+        limit: 20mb
+      roller:
+        kind: fixed_window
+        pattern: logs/debug_{}.gz
+        count: 5
+        base: 1
+    encoder:
+      kind: json
+    filters:
+      - kind: threshold
+        level: debug
 
 root:
-  level: info
+  level: debug
   appenders:
+    - debug_file
     - stdout
 
 loggers:
   app::grpc:
-    level: info
+    level: debug
     appenders:
       - grpc_requests
   app::rest:
-    level: info
+    level: debug
     appenders:
       - rest_requests
+  app::client:
+    level: debug
+    appenders:
+      - grpc_clients
   test::ut:
-    level: info
+    level: debug
     appenders:
       - tests
   test::it:
-    level: info
+    level: debug
     appenders:
       - tests

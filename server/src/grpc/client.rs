@@ -45,16 +45,29 @@ mod tests {
 
     #[tokio::test]
     async fn test_grpc_clients_default() {
-        crate::get_log_handle().await;
-        ut_info!("(test_grpc_clients_default) Start.");
+        lib_common::logger::get_log_handle().await;
+        ut_info!("start");
 
         let config = crate::Config::default();
         let clients = GrpcClients::default(config);
 
         let adsb = clients.storage.adsb;
-        ut_debug!("(test_grpc_clients_default) adsb: {:?}", adsb);
+        ut_debug!("adsb: {:?}", adsb);
         assert_eq!(adsb.get_name(), "adsb");
 
-        ut_info!("(test_grpc_clients_default) Success.");
+        ut_info!("success");
+    }
+
+    #[tokio::test]
+    async fn test_get_clients() {
+        lib_common::logger::get_log_handle().await;
+        ut_info!("start");
+
+        let clients = get_clients().await;
+
+        ut_debug!("adsb: {:?}", clients.storage.adsb);
+        assert_eq!(clients.storage.adsb.get_name(), "adsb");
+
+        ut_info!("success");
     }
 }

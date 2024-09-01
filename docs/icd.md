@@ -1,33 +1,34 @@
-![Arrow Banner](https://github.com/Arrow-air/tf-github/raw/main/src/templates/doc-banner-services.png)
+![Aetheric Banner](https://github.com/aetheric-oss/.github/raw/main/assets/doc-banner.png)
 
 # Interface Control Document (ICD) - `svc-FIXME`
 
+This document defines the gRPC and REST interfaces unique to the `svc-FIXME` microservice.
+
 ## :telescope: Overview
 
-This document defines the gRPC and REST interfaces unique to the `svc-FIXME`
-microservice.
+FIXME - What does this microservice do, in brief?
 
 ### Metadata
 
-| Attribute     | Description                                                       |
-| ------------- |-------------------------------------------------------------------|
-| Maintainer(s) | [Services Team](https://github.com/orgs/Arrow-air/teams/services) |
-| Stuckee       |  |
-| Status        | Draft                                                             |
+| Attribute     | Description                                                                    |
+| ------------- |--------------------------------------------------------------------------------|
+| Maintainer(s) | [@aetheric-oss/dev-realm](https://github.com/orgs/aetheric-oss/teams/dev-realm)|
+| Stuckee       |                                                                                |
+| Status        | Draft                                                                          |
 
 ## :books: Related Documents
 
 Document | Description
 --- | ---
-[High-Level Concept of Operations (CONOPS)](https://github.com/Arrow-air/se-services/blob/develop/docs/conops.md) | Overview of Arrow microservices.
-[High-Level Interface Control Document (ICD)](https://github.com/Arrow-air/se-services/blob/develop/docs/icd.md)  | Interfaces and frameworks common to all Arrow microservices.
+[High-Level Concept of Operations (CONOPS)](https://github.com/aetheric-oss/se-services/blob/develop/docs/conops.md) | Overview of Aetheric microservices.
+[High-Level Interface Control Document (ICD)](https://github.com/aetheric-oss/se-services/blob/develop/docs/icd.md)  | Interfaces and frameworks common to all Aetheric microservices.
 [Requirements - `svc-FIXME`](FIXME - generate a link specifically for this module's view in NocoDB) | Requirements and user stories for this microservice.
 [Concept of Operations - `svc-FIXME`](./conops.md) | Defines the motivation and duties of this microservice.
 [Software Design Document (SDD) - `svc-FIXME`](./sdd.md) | Specifies the internal activity of this microservice.
 
 ## :hammer: Frameworks
 
-See [High-Level Services ICD](https://github.com/Arrow-air/se-services/blob/develop/docs/icd.md).
+See [High-Level Services ICD](https://github.com/aetheric-oss/se-services/blob/develop/docs/icd.md).
 
 ## :mailbox: REST
 
@@ -47,9 +48,11 @@ See the High-Level ICD for common interfaces.
 
 ### Authentication
 
-See [High-Level Services ICD](https://github.com/Arrow-air/se-services/blob/develop/docs/icd.md).
+See [High-Level Services ICD](https://github.com/aetheric-oss/se-services/blob/develop/docs/icd.md).
 
 ### Endpoints
+
+See our [public documentation](https://www.aetheric.nl/docs/documentation/services/api/rest/develop#tag/svc-contact) for a full API.
 
 | Endpoint | Type | Arguments | Description |
 | ---- | --- | ---- | ---- |
@@ -64,7 +67,7 @@ See [High-Level Services ICD](https://github.com/Arrow-air/se-services/blob/deve
 
 ### Integrated Authentication & Encryption
 
-See [High-Level Services ICD](https://github.com/Arrow-air/se-services/blob/develop/docs/icd.md).
+See [High-Level Services ICD](https://github.com/aetheric-oss/se-services/blob/develop/docs/icd.md).
 
 ### gRPC Server Methods ("Services")
 
