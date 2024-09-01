@@ -1,6 +1,6 @@
 [package]
-description = "Arrow template-rust service gRPC client"
-keywords    = ["vtol", "client", "grpc", "template-rust"] # max 5
+description = "Aetheric template-rust service gRPC client"
+keywords    = ["vtol", "client", "grpc", "template-rust"]  # max 5
 name        = "svc-template-rust-client-grpc"
 version     = "0.2.0-develop.7"
 
@@ -23,8 +23,6 @@ stub_backends = [
   "tower",
   "tokio",
 ]
-# Pass through stub_server feature for our server code
-stub_server = ["stub_backends"]
 # Will implement stub functions for the client, only use for tests!
 stub_client = ["svc-template-rust"]
 
@@ -38,8 +36,8 @@ tower             = { version = "0.4", optional = true }
 
 [dependencies.lib-common]
 features = ["grpc"]
-git      = "https://github.com/Arrow-air/lib-common.git"
-tag      = "latest-develop"
+git      = "https://github.com/aetheric-oss/lib-common.git"
+tag      = "latest-develop"                                 # should be version tag for non-dev releases
 
 [dependencies.tokio]
 features = ["macros", "rt-multi-thread"]

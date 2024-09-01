@@ -2,14 +2,14 @@
 
 fn get_log_string(function: &str, name: &str) -> String {
     #[cfg(feature = "stub_client")]
-    return format!("({} MOCK) {} client.", function, name);
+    return format!("({}) (MOCK) {} client.", function, name);
 
     #[cfg(not(feature = "stub_client"))]
     cfg_if::cfg_if! {
         if #[cfg(feature = "stub_backends")] {
-            return format!("({} MOCK) {} server.", function, name);
+            format!("({}) (MOCK) {} server.", function, name)
         } else {
-            return format!("({}) {} client.", function, name);
+            format!("({}) {} client.", function, name)
         }
     }
 }

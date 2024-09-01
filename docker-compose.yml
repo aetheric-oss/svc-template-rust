@@ -1,5 +1,3 @@
-version: '3.8'
-
 configs:
   log4rs:
     file: log4rs.yaml

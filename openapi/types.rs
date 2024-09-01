@@ -1,19 +1,16 @@
-/// Types used for REST communication with the svc-cargo server
-
+/// Types used for REST communication with the svc-template-rust server
+use lib_common::time::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
-use chrono::{DateTime, Utc};
 
 /// Example Request Body Information Type
-#[derive(Debug, Clone)]
-#[derive(Deserialize, Serialize)]
-#[derive(ToSchema, IntoParams)]
+#[derive(Debug, Clone, Deserialize, Serialize, ToSchema, IntoParams)]
 pub struct ExampleRequest {
     /// Itinerary UUID to Cancel
     pub id: String,
 
     /// The time of the request
-    pub timestamp: DateTime<Utc>
+    pub timestamp: DateTime<Utc>,
 }
 
 /// Confirm itinerary Operation Status

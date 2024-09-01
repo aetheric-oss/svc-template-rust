@@ -1,4 +1,4 @@
-![Arrow Banner](https://github.com/Arrow-air/tf-github/raw/main/src/templates/doc-banner-services.png)
+![Aetheric Banner](https://github.com/aetheric-oss/.github/raw/main/assets/doc-banner.png)
 
 # Software Design Document (SDD) - `svc-FIXME`
 
@@ -10,18 +10,18 @@ This service is responsible for FIXME
 
 ### Metadata
 
-| Attribute     | Description                                                       |
-| ------------- |-------------------------------------------------------------------|
-| Maintainer(s) | [Services Team](https://github.com/orgs/Arrow-air/teams/services) |
-| Stuckee       |  |
-| Status        | Draft                                                             |
+| Attribute     | Description                                                                    |
+| ------------- |--------------------------------------------------------------------------------|
+| Maintainer(s) | [@aetheric-oss/dev-realm](https://github.com/orgs/aetheric-oss/teams/dev-realm)|
+| Stuckee       |                                                                                |
+| Status        | Draft                                                                          |
 
 ## :books: Related Documents
 
 Document | Description
 --- | ---
-[High-Level Concept of Operations (CONOPS)](https://github.com/Arrow-air/se-services/blob/develop/docs/conops.md) | Overview of Arrow microservices.
-[High-Level Interface Control Document (ICD)](https://github.com/Arrow-air/se-services/blob/develop/docs/icd.md)  | Interfaces and frameworks common to all Arrow microservices.
+[High-Level Concept of Operations (CONOPS)](https://github.com/aetheric-oss/se-services/blob/develop/docs/conops.md) | Overview of Aetheric microservices.
+[High-Level Interface Control Document (ICD)](https://github.com/aetheric-oss/se-services/blob/develop/docs/icd.md)  | Interfaces and frameworks common to all Aetheric microservices.
 [Requirements - `svc-FIXME`](FIXME - generate a link specifically for this module's view in NocoDB) | Requirements and user stories for this microservice.
 [Concept of Operations - `svc-FIXME`](./conops.md) | Defines the motivation and duties of this microservice.
 [Interface Control Document (ICD) - `svc-FIXME`](./icd.md) | Defines the inputs and outputs of this microservice.
@@ -47,16 +47,13 @@ FIXME Description of activities at init
 
 ### Control Loop
 
-FIXME Description of activities during loop
-As a GRPC server, this service awaits requests and executes handlers.
+FIXME Description of activities during loop As a GRPC server, this service awaits requests and executes handlers.
 
 All handlers **require** the following environment variables to be set:
 - FIXME
 
-For detailed sequence diagrams regarding request handlers, see [REST
-Handlers](#mailbox-rest-handlers).
-For detailed sequence diagrams regarding request handlers, see [gRPC
-Handlers](#speech_balloon-grpc-handlers).
+For detailed sequence diagrams regarding request handlers, see [REST Handlers](#mailbox-rest-handlers).
+For detailed sequence diagrams regarding request handlers, see [gRPC Handlers](#speech_balloon-grpc-handlers).
 
 ### Cleanup
 

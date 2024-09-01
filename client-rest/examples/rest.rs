@@ -1,9 +1,9 @@
 //! Example communication with this service
 
-use chrono::Utc;
 use hyper::{Body, Client, Method, Request, Response};
 use hyper::{Error, StatusCode};
 use lib_common::grpc::get_endpoint_from_env;
+use lib_common::time::Utc;
 use svc_template_rust_client_rest::types::*;
 
 fn evaluate(resp: Result<Response<Body>, Error>, expected_code: StatusCode) -> (bool, String) {
