@@ -1,3 +1,4 @@
+---
 refresh_rate: 30 seconds
 appenders:
   stdout:
@@ -5,6 +6,26 @@ appenders:
     encoder:
       # https://medium.com/nikmas-group-rust/advanced-logging-in-rust-with-log4rs-2d712bb322de
       pattern: "{d(%Y-%m-%d %H:%M:%S)} | {I} | {h({l}):5.5} | {f}:{L} | {m}{n}"
+    filters:
+      - kind: threshold
+        level: info
+  client_requests:
+    kind: rolling_file
+    path: "logs/client_requests.log"
+    policy:
+      trigger:
+        kind: size
+        limit: 20mb
+      roller:
+        kind: fixed_window
+        pattern: logs/client_requests_{}.gz
+        count: 5
+        base: 1
+    encoder:
+      kind: json
+    filters:
+      - kind: threshold
+        level: info
   grpc_requests:
     kind: rolling_file
     path: "logs/grpc_requests.log"
@@ -19,6 +40,9 @@ appenders:
         base: 1
     encoder:
       kind: json
+    filters:
+      - kind: threshold
+        level: info
   rest_requests:
     kind: rolling_file
     path: "logs/rest_requests.log"
@@ -33,6 +57,43 @@ appenders:
         base: 1
     encoder:
       kind: json
+    filters:
+      - kind: threshold
+        level: info
+  psql:
+    kind: rolling_file
+    path: "logs/psql.log"
+    policy:
+      trigger:
+        kind: size
+        limit: 20mb
+      roller:
+        kind: fixed_window
+        pattern: logs/psql{}.gz
+        count: 5
+        base: 1
+    encoder:
+      kind: json
+    filters:
+      - kind: threshold
+        level: info
+  postgis:
+    kind: rolling_file
+    path: "logs/postgis.log"
+    policy:
+      trigger:
+        kind: size
+        limit: 20mb
+      roller:
+        kind: fixed_window
+        pattern: logs/postgis_{}.gz
+        count: 5
+        base: 1
+    encoder:
+      kind: json
+    filters:
+      - kind: threshold
+        level: info
   tests:
     kind: rolling_file
     path: "logs/tests.log"
@@ -47,26 +108,63 @@ appenders:
         base: 1
     encoder:
       kind: json
+    filters:
+      - kind: threshold
+        level: info
+  debug_file:
+    kind: rolling_file
+    path: "logs/debug.log"
+    policy:
+      trigger:
+        kind: size
+        limit: 20mb
+      roller:
+        kind: fixed_window
+        pattern: logs/debug_{}.gz
+        count: 5
+        base: 1
+    encoder:
+      kind: json
+    filters:
+      - kind: threshold
+        level: debug
 
 root:
-  level: info
+  level: debug
   appenders:
+    - debug_file
     - stdout
 
 loggers:
-  app::grpc:
-    level: info
+  backend::psql:
+    level: debug
     appenders:
-      - grpc_requests
+      - psql
+  backend::postgis:
+    level: debug
+    appenders:
+      - postgis
   app::rest:
-    level: info
+    level: debug
     appenders:
       - rest_requests
+  app::grpc:
+    level: debug
+    appenders:
+      - grpc_requests
+  app::grpc::clients::grpc:
+    level: debug
+    appenders:
+      - client_requests
+  app::client::storage::grpc:
+    level: debug
+    appenders:
+      - client_requests
   test::ut:
-    level: info
+    level: debug
     appenders:
       - tests
   test::it:
-    level: info
+    level: debug
     appenders:
       - tests
