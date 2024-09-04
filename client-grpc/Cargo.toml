@@ -2,7 +2,7 @@
 description = "Aetheric template-rust service gRPC client"
 keywords    = ["vtol", "client", "grpc", "template-rust"]  # max 5
 name        = "svc-template-rust-client-grpc"
-version     = "0.2.0-develop.7"
+version     = "0.2.0-develop.8"
 
 authors.workspace      = true
 categories.workspace   = true
