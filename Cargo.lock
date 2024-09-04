@@ -1363,9 +1363,9 @@ checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 
 [[package]]
 name = "openssl-src"
-version = "300.3.1+3.3.1"
+version = "300.3.2+3.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7259953d42a81bf137fbbd73bd30a8e1914d6dce43c2b90ed575783a22608b91"
+checksum = "a211a18d945ef7e648cc6e0058f4c548ee46aab922ea203e0d30e966ea23647b"
 dependencies = [
  "cc",
 ]
@@ -2232,7 +2232,7 @@ dependencies = [
 
 [[package]]
 name = "svc-template-rust"
-version = "0.2.0-develop.7"
+version = "0.2.0-develop.8"
 dependencies = [
  "anyhow",
  "axum",
@@ -2251,7 +2251,7 @@ dependencies = [
  "serde_json",
  "svc-storage-client-grpc",
  "svc-template-rust",
- "svc-template-rust-client-grpc 0.2.0-develop.7 (git+https://github.com/aetheric-oss/svc-template-rust.git?tag=latest-develop)",
+ "svc-template-rust-client-grpc 0.2.0-develop.7",
  "tokio",
  "tokio-util",
  "tonic",
@@ -2260,22 +2260,6 @@ dependencies = [
  "tower",
  "tower-http",
  "utoipa",
-]
-
-[[package]]
-name = "svc-template-rust-client-grpc"
-version = "0.2.0-develop.7"
-dependencies = [
- "cfg-if",
- "lib-common 0.2.1-develop.4 (git+https://github.com/aetheric-oss/lib-common?tag=latest-develop)",
- "log",
- "logtest",
- "prost",
- "svc-template-rust",
- "svc-template-rust-client-grpc 0.2.0-develop.7",
- "tokio",
- "tonic",
- "tower",
 ]
 
 [[package]]
@@ -2291,8 +2275,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "svc-template-rust-client-grpc"
+version = "0.2.0-develop.8"
+dependencies = [
+ "cfg-if",
+ "lib-common 0.2.1-develop.4 (git+https://github.com/aetheric-oss/lib-common?tag=latest-develop)",
+ "log",
+ "logtest",
+ "prost",
+ "svc-template-rust",
+ "svc-template-rust-client-grpc 0.2.0-develop.8",
+ "tokio",
+ "tonic",
+ "tower",
+]
+
+[[package]]
 name = "svc-template-rust-client-rest"
-version = "0.2.0-develop.7"
+version = "0.2.0-develop.8"
 dependencies = [
  "hyper",
  "lib-common 0.2.1-develop.4 (git+https://github.com/aetheric-oss/lib-common?tag=latest-develop)",
