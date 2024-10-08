@@ -5,9 +5,9 @@
 SHELL := /bin/bash
 
 SANITYCHECKS_IMAGE_NAME := ghcr.io/arrow-air/tools/arrow-sanitychecks
-SANITYCHECKS_IMAGE_TAG  := 0.3
+SANITYCHECKS_IMAGE_TAG  := 0.4
 
-SOURCE_PATH      ?= $(PWD)
+SOURCE_PATH ?= $(PWD)
 
 # Style templates for console output.
 GREEN  := $(shell echo -e `tput setaf 2`)
