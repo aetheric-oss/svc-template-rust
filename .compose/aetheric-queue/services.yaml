@@ -16,9 +16,9 @@ services:
     image: rabbitmq:3.11-alpine
     profiles:
       - realm
+      - integration-test
     networks:
       - aetheric-realm
-      - integration-test
     restart: always
     ports:
       - 5672:5672
