@@ -131,7 +131,7 @@ services:
         condition: service_healthy
 
   devops-test:
-    image: ${DEVOPS-TEST_IMAGE:-ghcr.io/aetheric-oss/svc-assets}:${DEVOPS-TEST_TAG:-latest-develop}
+    image: ${DEVOPS_TEST_IMAGE:-ghcr.io/aetheric-oss/svc-assets}:${DEVOPS_TEST_TAG:-latest-develop}
     container_name: aetheric-${COMPOSE_PROJECT_NAME}-svc-devops-test
     extends:
       file: base.yaml
