@@ -22,11 +22,19 @@ version  = "4.2"
 [dependencies.lib-common]
 features = ["grpc"]
 git      = "https://github.com/aetheric-oss/lib-common.git"
-tag      = "latest-develop"                                 # should be version tag for non-dev releases
+tag      = "v3.0.0"
 
 [dev-dependencies]
-hyper = { version = "0.14", features = ["full"] }
-tokio = { version = "1.33", features = ["full"] }
+http-body-util = { version = "0.1" }
+hyper          = { version = "1.4", features = ["full"] }
+hyper-util     = { version = "0.1" }
+tokio          = { version = "1.40", features = ["full"] }
 
 [[example]]
 name = "rest"
+
+# https://github.com/xd009642/tarpaulin?tab=readme-ov-file#ignoring-code-in-files
+# removes warnings introduced by rust 1.8
+# can be removed when the cfg attributes can be replaced with `#[coverage(off)]` (currently only available in nightly)
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }

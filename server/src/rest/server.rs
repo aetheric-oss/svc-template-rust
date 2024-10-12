@@ -20,6 +20,17 @@ use tower_http::cors::{Any, CorsLayer};
 use tower_http::trace::TraceLayer;
 
 /// Starts the REST API server for this microservice
+///
+/// # Example:
+/// ```
+/// use svc_template_rust::rest::server::rest_server;
+/// use svc_template_rust::Config;
+/// async fn example() -> Result<(), tokio::task::JoinError> {
+///     let config = Config::default();
+///     tokio::spawn(rest_server(config, None)).await;
+///     Ok(())
+/// }
+/// ```
 pub async fn rest_server(
     config: Config,
     shutdown_rx: Option<tokio::sync::oneshot::Receiver<()>>,
@@ -85,17 +96,31 @@ pub async fn rest_server(
     //
     // Bind to address
     //
-    match axum::Server::bind(&full_rest_addr)
-        .serve(app.into_make_service())
+    let listener = match tokio::net::TcpListener::bind(&full_rest_addr).await {
+        Ok(url) => url,
+        Err(e) => {
+            rest_error!(
+                "Could not bind address [{}]: {:?}, exiting.",
+                full_rest_addr,
+                e
+            );
+            return Err(());
+        }
+    };
+
+    //
+    // Start serving
+    //
+    match axum::serve(listener, app)
         .with_graceful_shutdown(shutdown_signal("rest", shutdown_rx))
         .await
     {
         Ok(_) => {
-            rest_info!("hosted at: {}.", full_rest_addr);
+            rest_info!("Server running at: {}.", full_rest_addr);
             Ok(())
         }
         Err(e) => {
-            rest_error!("could not start server: {}", e);
+            rest_error!("Could not start server: {}", e);
             Err(())
         }
     }
