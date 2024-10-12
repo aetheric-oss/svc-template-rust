@@ -58,7 +58,8 @@ services:
       - type: volume
         source: postgis-data
         target: /var/lib/postgresql/data
-    entrypoint: ["/bin/sh /usr/local/bin/docker-entrypoint-init.sh"]
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["/bin/sh /usr/local/bin/docker-entrypoint-init.sh"]
     depends_on:
       gis-init-ssl:
         condition: service_completed_successfully
