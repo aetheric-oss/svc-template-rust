@@ -1,12 +1,18 @@
 //! Example communication with this service
 
-use hyper::{Body, Client, Method, Request, Response};
-use hyper::{Error, StatusCode};
+use http_body_util::{combinators::BoxBody, BodyExt, Full};
+use hyper::{
+    body::{Bytes, Incoming},
+    Error, Method, Request, Response, StatusCode,
+};
+use hyper_util::rt::TokioIo;
 use lib_common::grpc::get_endpoint_from_env;
 use lib_common::time::Utc;
+use std::convert::Infallible;
 use svc_template_rust_client_rest::types::*;
+use tokio::net::TcpStream;
 
-fn evaluate(resp: Result<Response<Body>, Error>, expected_code: StatusCode) -> (bool, String) {
+fn evaluate(resp: Result<Response<Incoming>, Error>, expected_code: StatusCode) -> (bool, String) {
     let mut ok = true;
     let result_str: String = match resp {
         Ok(r) => {
@@ -24,20 +30,30 @@ fn evaluate(resp: Result<Response<Body>, Error>, expected_code: StatusCode) -> (
 
     (ok, result_str)
 }
+fn full<T: Into<Bytes>>(chunk: T) -> BoxBody<Bytes, Infallible> {
+    Full::new(chunk.into()).boxed()
+}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("NOTE: Ensure the server is running, or this example will fail.");
 
     let (host, port) = get_endpoint_from_env("SERVER_HOSTNAME", "SERVER_PORT_REST");
-    let url = format!("http://{host}:{port}");
+    let addr = format!("{}:{}", host, port);
 
-    println!("Rest endpoint set to [{url}].");
+    println!("Rest endpoint set to [{}].", addr);
+
+    let stream = TcpStream::connect(addr.clone()).await?;
+    let io = TokioIo::new(stream);
+
+    let (mut sender, conn) = hyper::client::conn::http1::handshake(io).await?;
+    tokio::task::spawn(async move {
+        if let Err(err) = conn.await {
+            println!("Connection failed: {:?}", err);
+        }
+    });
 
     let mut ok = true;
-    let client = Client::builder()
-        .pool_idle_timeout(std::time::Duration::from_secs(10))
-        .build_http();
 
     // POST /template/example
     {
@@ -47,16 +63,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
 
         let data_str = serde_json::to_string(&data).unwrap();
-        let uri = format!("{}/template/example", url);
+        let uri = format!("http://{}/template/example", addr);
         let req = Request::builder()
             .method(Method::POST)
             .uri(uri.clone())
             .header("content-type", "application/json")
-            .body(Body::from(data_str))
+            .body(full(data_str))
             .unwrap();
 
-        let resp = client.request(req).await;
-        let (success, result_str) = evaluate(resp, StatusCode::OK);
+        let res = sender.send_request(req).await;
+        let (success, result_str) = evaluate(res, StatusCode::OK);
         ok &= success;
 
         println!("{}: {}", uri, result_str);

@@ -13,7 +13,6 @@ FIXME - What does this microservice do, in brief?
 | Attribute     | Description                                                                    |
 | ------------- |--------------------------------------------------------------------------------|
 | Maintainer(s) | [@aetheric-oss/dev-realm](https://github.com/orgs/aetheric-oss/teams/dev-realm)|
-| Stuckee       |                                                                                |
 | Status        | Draft                                                                          |
 
 ## :books: Related Documents
@@ -44,7 +43,7 @@ See the High-Level ICD for common interfaces.
 
 | File Location | Description |
 --- | ---
-`server/src/api_rest.rs` | Implements the REST endpoints.
+`server/src/rest/api.rs` | Implements the REST endpoints.
 
 ### Authentication
 

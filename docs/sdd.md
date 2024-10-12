@@ -13,7 +13,6 @@ This service is responsible for FIXME
 | Attribute     | Description                                                                    |
 | ------------- |--------------------------------------------------------------------------------|
 | Maintainer(s) | [@aetheric-oss/dev-realm](https://github.com/orgs/aetheric-oss/teams/dev-realm)|
-| Stuckee       |                                                                                |
 | Status        | Draft                                                                          |
 
 ## :books: Related Documents
@@ -44,6 +43,14 @@ FIXME
 ### Initialization
 
 FIXME Description of activities at init
+
+At initialization this service creates two servers on separate threads: a GRPC server and a REST server.
+
+The REST server expects the following environment variables to be set:
+- `DOCKER_PORT_REST` (default: `8000`)
+
+The GRPC server expects the following environment variables to be set:
+- `DOCKER_PORT_GRPC` (default: `50051`)
 
 ### Control Loop
 

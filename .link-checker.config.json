@@ -4,6 +4,9 @@
       "pattern": "nocodb.aetheric.nl"
     },
     {
+      "pattern": "http://localhost"
+    },
+    {
       "pattern": "aetheric.nl/.*/api/rest"
     }
   ],

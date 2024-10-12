@@ -35,3 +35,9 @@ Refactorings
 Lcov
 seccomp
 Rnever
+cfgs
+combinators
+protos
+dozzle
+postgis
+psql

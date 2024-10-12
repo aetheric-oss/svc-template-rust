@@ -31,7 +31,7 @@ pub struct Config {
 
 impl Default for Config {
     fn default() -> Self {
-        log::warn!("(default) Creating Config object with default values.");
+        log::info!("(default) Creating Config object with default values.");
         Self::new()
     }
 }
@@ -60,13 +60,15 @@ impl Config {
         config::Config::builder()
             .set_default("docker_port_grpc", default_config.docker_port_grpc)?
             .set_default("docker_port_rest", default_config.docker_port_rest)?
+            .set_default("storage_port_grpc", default_config.storage_port_grpc)?
+            .set_default("storage_host_grpc", default_config.storage_host_grpc)?
             .set_default("log_config", default_config.log_config)?
             .set_default(
                 "rest_concurrency_limit_per_service",
                 default_config.rest_concurrency_limit_per_service,
             )?
             .set_default(
-                "rest_request_limit_per_seconds",
+                "rest_request_limit_per_second",
                 default_config.rest_request_limit_per_second,
             )?
             .set_default(

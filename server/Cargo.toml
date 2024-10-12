@@ -30,31 +30,27 @@ stub_client = ["stub_backends"]
 
 [dependencies]
 anyhow       = "1.0"
-axum         = { version = "0.6", features = ["macros"] }
+axum         = { version = "0.7", features = ["macros"] }
 cargo-husky  = "1"
 clap         = { version = "4.5", features = ["derive"] }
-config       = "0.13"
+config       = "0.14"
 dotenv       = "0.15"
-hyper        = "0.14"
+hyper        = "1.4"
 log          = "0.4"
 openssl      = "0.10"
-prost        = "0.12"
+prost        = "0.13"
 serde        = "1.0"
 serde_json   = "1.0"
-tokio        = { version = "1.33", features = ["full"] }
+tokio        = { version = "1.40", features = ["full"] }
 tokio-util   = "0.7"
-tonic        = "0.10"
-tonic-health = "0.10"
-tower        = { version = "0.4", features = ["limit"] }
-tower-http   = { version = "0.4", features = ["cors", "trace"] }
+tonic        = "0.12"
+tonic-health = "0.12"
+tower        = { version = "0.5", features = ["limit", "buffer"] }
+tower-http   = { version = "0.6", features = ["cors", "trace"] }
 
 # ========================================================
 # FIXME: This is used as an example, you can point to other services's clients instead.
 # ========================================================
-[dependencies.svc-template-rust-client-grpc]
-git = "https://github.com/aetheric-oss/svc-template-rust.git"
-tag = "latest-develop"                                        # should be version tag for non-dev releases
-
 [dependencies.svc-storage-client-grpc]
 features = ["adsb"]
 git      = "https://github.com/aetheric-oss/svc-storage"
@@ -63,7 +59,7 @@ tag      = "latest-develop"                              # should be version tag
 
 [dependencies.lib-common]
 git = "https://github.com/aetheric-oss/lib-common"
-tag = "latest-develop"                             # should be version tag for non-dev releases
+tag = "v3.0.0"
 
 [dependencies.log4rs]
 features = [
@@ -92,4 +88,10 @@ features = ["dev"]
 path     = "."
 
 [build-dependencies]
-tonic-build = "0.11"
+tonic-build = "0.12"
+
+# https://github.com/xd009642/tarpaulin?tab=readme-ov-file#ignoring-code-in-files
+# removes warnings introduced by rust 1.8
+# can be removed when the cfg attributes can be replaced with `#[coverage(off)]` (currently only available in nightly)
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }

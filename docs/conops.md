@@ -13,7 +13,6 @@ FIXME - What does this microservice do, in brief?
 | Attribute     | Description                                                                    |
 | ------------- |--------------------------------------------------------------------------------|
 | Maintainer(s) | [@aetheric-oss/dev-realm](https://github.com/orgs/aetheric-oss/teams/dev-realm)|
-| Stuckee       |                                                                                |
 | Status        | Draft                                                                          |
 
 ## :books: Related Documents

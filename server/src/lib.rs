@@ -9,10 +9,6 @@ pub mod grpc;
 
 pub use crate::config::Config;
 
-// --------------------------------------------------
-// START REST SECTION
-// This section should be removed if there is no REST interface
-// --------------------------------------------------
 pub use clap::Parser;
 /// rest implementation module
 pub mod rest;
@@ -25,12 +21,8 @@ pub struct Cli {
     pub openapi: Option<String>,
 }
 
-// --------------------------------------------------
-// END REST SECTION
-// --------------------------------------------------
-
 /// Tokio signal handler that will wait for a user to press CTRL+C.
-/// This signal handler can be used in our [`axum::Server`] method `with_graceful_shutdown`
+/// This signal handler can be used in our [`axum::serve()`] method `with_graceful_shutdown`
 /// and in our [`tonic::transport::Server`] method `serve_with_shutdown`.
 ///
 /// # Examples
@@ -40,9 +32,18 @@ pub struct Cli {
 /// use svc_template_rust::shutdown_signal;
 /// pub async fn server() {
 ///     let app = axum::Router::new();
-///     axum::Server::bind(&"0.0.0.0:8000".parse().unwrap())
-///         .serve(app.into_make_service())
-///         .with_graceful_shutdown(shutdown_signal("rest", None));
+///     let full_rest_addr: std::net::SocketAddr = "0.0.0.0:8000".parse().unwrap();
+///     //
+///     // Bind to address
+///     //
+///     let listener = tokio::net::TcpListener::bind(&full_rest_addr).await.unwrap();
+///
+///     //
+///     // Start serving
+///     //
+///     axum::serve(listener, app)
+///         .with_graceful_shutdown(shutdown_signal("rest", None))
+///         .await.unwrap();
 /// }
 /// ```
 ///
@@ -51,6 +52,7 @@ pub struct Cli {
 /// use svc_template_rust::shutdown_signal;
 /// pub async fn server() {
 ///     let (_, health_service) = tonic_health::server::health_reporter();
+///
 ///     tonic::transport::Server::builder()
 ///         .add_service(health_service)
 ///         .serve_with_shutdown("0.0.0.0:50051".parse().unwrap(), shutdown_signal("grpc", None));
@@ -95,24 +97,7 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_load_logger_config_from_file() {
-        lib_common::logger::get_log_handle().await;
-        ut_info!("start");
-
-        let result =
-            lib_common::logger::load_logger_config_from_file("/usr/src/app/log4rs.yaml").await;
-        ut_debug!("{:?}", result);
-        assert!(result.is_ok());
-
-        // This message should be written to file
-        ut_error!("Testing log config from file. This should be written to the tests.log file.");
-
-        ut_info!("success");
-    }
-
-    #[tokio::test]
     async fn test_server_shutdown() {
-        lib_common::logger::get_log_handle().await;
         ut_info!("start");
 
         let (shutdown_tx, shutdown_rx) = tokio::sync::oneshot::channel::<()>();

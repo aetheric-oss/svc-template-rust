@@ -13,13 +13,14 @@ repository.workspace   = true
 
 [features]
 dev       = ["mock", "tokio"]
-test_util = ["mock", "stub_backends", "tokio"]
+test_util = ["mock", "stub_backends"]
 # Will add a 'mock' module for the enabled resources, providing access to mock data generation functions
 mock = []
 # Will use a stubbed server connection, only use for tests!
 stub_backends = [
   "svc-template-rust/stub_server",
   "lib-common/grpc_mock",
+  "hyper-util",
   "tower",
   "tokio",
 ]
@@ -28,21 +29,22 @@ stub_client = ["svc-template-rust"]
 
 [dependencies]
 cfg-if            = "1.0"
+hyper-util        = { version = "0.1", optional = true }
 log               = { version = "0.4" }
-prost             = "0.12"
+prost             = "0.13"
 svc-template-rust = { path = "../server", optional = true }
-tonic             = "0.10"
-tower             = { version = "0.4", optional = true }
+tonic             = "0.12"
+tower             = { version = "0.5", optional = true }
 
 [dependencies.lib-common]
 features = ["grpc"]
 git      = "https://github.com/aetheric-oss/lib-common.git"
-tag      = "latest-develop"                                 # should be version tag for non-dev releases
+tag      = "v3.0.0"
 
 [dependencies.tokio]
 features = ["macros", "rt-multi-thread"]
 optional = true
-version  = "1.33"
+version  = "1.40"
 
 [dev-dependencies]
 logtest = "2.0"
@@ -54,3 +56,9 @@ path     = "."
 
 [[example]]
 name = "grpc"
+
+# https://github.com/xd009642/tarpaulin?tab=readme-ov-file#ignoring-code-in-files
+# removes warnings introduced by rust 1.8
+# can be removed when the cfg attributes can be replaced with `#[coverage(off)]` (currently only available in nightly)
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
