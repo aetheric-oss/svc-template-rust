@@ -32,7 +32,7 @@ services:
         target: /scripts/init-ssl.sh
         read_only: true
     entrypoint: ["/bin/sh", "-c"]
-    command: ["/scripts/init-ssl.sh"]
+    command: ["/bin/sh /scripts/init-ssl.sh"]
 
   db:
     container_name: aetheric-db
