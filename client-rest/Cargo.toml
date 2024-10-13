@@ -2,7 +2,7 @@
 description = "Aetheric template-rust service REST client"
 keywords    = ["vtol", "client", "rest", "template-rust"]  # max 5
 name        = "svc-template-rust-client-rest"
-version     = "0.2.0-develop.8"
+version     = "0.2.0-develop.9"
 
 authors.workspace      = true
 categories.workspace   = true
