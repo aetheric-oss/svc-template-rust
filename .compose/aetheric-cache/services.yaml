@@ -17,6 +17,7 @@ services:
     profiles:
       - realm
       - integration-test
+      - it-coverage
     environment:
       - VALKEY_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
       - ALLOW_EMPTY_PASSWORD=yes
