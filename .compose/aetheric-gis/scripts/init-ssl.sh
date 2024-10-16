@@ -80,5 +80,7 @@ fi
 
 echo Making sure the postgres user can read the certs to start the server
 chown -R postgres:postgres ${SSL_DIR}/
+# make sure pk8 file is readable by docker user
+chown $DOCKER_USER_ID:$DOCKER_GROUP_ID "${CERT_DIR}/client.${CLIENT}.key.pk8"
 
 exit 0
