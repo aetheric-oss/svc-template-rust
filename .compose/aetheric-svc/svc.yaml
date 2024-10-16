@@ -151,6 +151,11 @@ services:
         condition: service_healthy
       cache:
         condition: service_healthy
+    volumes:
+      - type: volume
+        source: postgis-ssl
+        target: /ssl
+        read_only: true
 
   pricing:
     image: ${PRICING_IMAGE:-ghcr.io/aetheric-oss/svc-assets}:${PRICING_TAG:-latest-develop}
@@ -180,5 +185,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - type: volume
+        source: db-ssl
+        target: /cockroach/ssl
+        read_only: true
 
 
