@@ -66,6 +66,9 @@ if [ ! -f "${CERT_DIR}/client.${CLIENT}.crt" ]; then
 	openssl pkcs8 -topk8 -outform PEM -in "${CERT_DIR}/client.${CLIENT}.key" -out "${CERT_DIR}/client.${CLIENT}.key.pk8" -nocrypt
 fi
 
+# make sure pk8 file is readable by docker user
+chown $DOCKER_USER_ID:$DOCKER_GROUP_ID "${CERT_DIR}/client.${CLIENT}.key.pk8"
+
 # Node cert?
 if [ ! -f "${CERT_DIR}/node.crt" ]; then
 	printf "%s\n" "Creating NODE certificate...."
