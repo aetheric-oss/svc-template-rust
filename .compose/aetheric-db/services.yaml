@@ -20,6 +20,7 @@ services:
       - realm-db
       - realm
       - integration-test
+      - it-coverage
     volumes:
       - type: volume
         source: db-data
@@ -31,6 +32,9 @@ services:
         source: scripts/init-ssl.sh
         target: /scripts/init-ssl.sh
         read_only: true
+    environment:
+      DOCKER_USER_ID: ${DOCKER_USER_ID:-0}
+      DOCKER_GROUP_ID: ${DOCKER_GROUP_ID:-0}
     entrypoint: ["/bin/sh", "-c"]
     command: ["/bin/sh /scripts/init-ssl.sh"]
 
@@ -41,6 +45,7 @@ services:
       - realm-db
       - realm
       - integration-test
+      - it-coverage
     ports:
       - 36257:36257
       - 8082:8080
