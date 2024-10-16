@@ -17,6 +17,7 @@ services:
     profiles:
       - realm
       - integration-test
+      - it-coverage
     networks:
       - aetheric-realm
     restart: always
