@@ -10,7 +10,6 @@ include:
   - .compose/aetheric-queue/services.yaml
   - .compose/aetheric-svc/services.yaml
   - .compose/aetheric-svc/test-server.yaml
-  - .compose/aetheric-svc/rust-coverage.yaml
   - .compose/aetheric-svc/rust-test.yaml
   - .compose/dozzle/services.yaml
   - .compose/reverse-proxy/services.yaml
